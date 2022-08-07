@@ -2659,6 +2659,7 @@ select[multiple].input-lg {
   .form-inline .input-group > .form-control {
     width: 100%;
   }
+
   .form-inline .control-label {
     margin-bottom: 0;
     vertical-align: middle;
@@ -3050,7 +3051,7 @@ fieldset[disabled] .btn-link:focus {
 .btn-lg,
 .btn-group-lg > .btn {
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 8px;
   line-height: 1.33;
   border-radius: 6px;
 }
