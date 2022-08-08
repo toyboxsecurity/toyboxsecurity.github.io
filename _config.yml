@@ -30,3 +30,11 @@ social:
     icon: steam
     url: https://store.steampowered.com/app/739630/Phasmophobia/
 
+socialLinks:
+  - title: TWITTER
+    icon: twitter
+    url: https://twitter.com/
+  - title: TIKTOK
+    icon: tiktok
+    url: https://www.tiktok.com/
+
