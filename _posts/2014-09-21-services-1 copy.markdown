@@ -1,6 +1,6 @@
 ---
 layout: default
-img: vase.gif
+img: slingShot.gif
 category: Services
 title: Home Alone? No Problem!
 description: |

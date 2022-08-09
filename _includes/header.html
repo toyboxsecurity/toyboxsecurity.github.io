@@ -16,10 +16,14 @@
           <ul class="nav navbar-nav navbar-right">  
             <li>
                   <a class="page-scroll" href="#about">About</a>
-              </li>            
+              </li>   
+              <li>
+                <a class="page-scroll" href="#services">Features</a>
+              </li>         
               <li>
                   <a class="page-scroll" href="#contact">Contact</a>
               </li>
+
               <li>
                 <a href="presskit.html">Press Kit</a>
               </li>
@@ -31,40 +35,40 @@
 </nav>
 
 <section id="home">
-<!-- Header -->
-<div class="intro-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="gfg">
-          <p id="ToyBoxSecurityLogo"><img src="../img/ToyBoxSecurityLogo.png">
-          </p>
+  <!-- Header -->
+  <div class="intro-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="gfg">
+            <p id="ToyBoxSecurityLogo"><img src="../img/ToyBoxSecurityLogo.png">
+            </p>
+          </div>
+          <div class="intro-message">
+            <div class="embed-youtube">
+              <iframe src="https://www.youtube.com/embed/7WDBqXTAKDg" width="750" height="563" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <ul class="list-inline intro-social-buttons">
+              {% for social in site.social %}
+              <li>
+                <a href="{{ social.url }}" class="btn btn-primary btn-lg"><i class="fa fa-{{ social.icon }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
+              </li>
+              {% endfor %}
+            </ul>
+            <ul class="list-inline intro-social-buttons">
+              {% for social in site.socialLinks %}
+              <li>
+                <a href="{{ social.url }}" class="btn btn-default btn-sm"><i class="fa fa-{{ social.icon }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
+              </li>
+              {% endfor %}
+            </ul>
+            <div class="embed-form">
+              <iframe width="400" height="200" src="https://6e743ba6.sibforms.com/serve/MUIEAFIMxk19z4MfjGwNa6OqHQeJbaCWhvfp6jlM6n_c0SlUaxJm9fj32TRKjexCSLcrxXBaJcsMK1xYVwVN6v--0P9qi8xgXxB7sJ-LFV1xh9E37IZkoJjDSi7lH9Cdy0IBOJnemtR2okvxnmEI379CJyFHkpjzaOha5e3HmRJ832mhJDm45oPbGZhm9gMXFTOGEqiUYFISbCli" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+            </div>
         </div>
-        <div class="intro-message">
-          <div class="embed-youtube">
-            <iframe src="https://www.youtube.com/embed/7WDBqXTAKDg" width="750" height="563" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <ul class="list-inline intro-social-buttons">
-            {% for social in site.social %}
-            <li>
-              <a href="{{ social.url }}" class="btn btn-primary btn-lg"><i class="fa fa-{{ social.icon }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
-            </li>
-            {% endfor %}
-          </ul>
-          <ul class="list-inline intro-social-buttons">
-            {% for social in site.socialLinks %}
-            <li>
-              <a href="{{ social.url }}" class="btn btn-default btn-sm"><i class="fa fa-{{ social.icon }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
-            </li>
-            {% endfor %}
-          </ul>
-          <div class="embed-youtube">
-            <iframe width="540" height="305" src="https://6e743ba6.sibforms.com/serve/MUIEAFIMxk19z4MfjGwNa6OqHQeJbaCWhvfp6jlM6n_c0SlUaxJm9fj32TRKjexCSLcrxXBaJcsMK1xYVwVN6v--0P9qi8xgXxB7sJ-LFV1xh9E37IZkoJjDSi7lH9Cdy0IBOJnemtR2okvxnmEI379CJyFHkpjzaOha5e3HmRJ832mhJDm45oPbGZhm9gMXFTOGEqiUYFISbCli" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>          </div>
-          </div>
       </div>
     </div>
+    <!-- /.container -->
   </div>
-  <!-- /.container -->
-</div>
 <!-- /.intro-header -->
 </section>
