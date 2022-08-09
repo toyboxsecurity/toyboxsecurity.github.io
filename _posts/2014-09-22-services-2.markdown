@@ -2,9 +2,9 @@
 layout: default
 img: dog.png
 category: Services
-title: 3D Device Mockups<br>by PSDCovers
+title: Play As The Robbers:<br>Crowbars, Up!
 description: |
 ---
-  Turn your 2D designs into high quality, 3D
-  product shots in seconds using free Photoshop actions by [PSDCovers](http://www.psdcovers.com/)! Visit
-  their website to download some of their awesome, free photoshop actions!
+  If you're feeling a bit more criminally inclined, play as a robber instead. Carefully choose your equipment loadout and case the house for valuables,
+  then steal as much loot as possible all while avoiding the kids' traps until either the cops come, or the kid(s) defeat you.<br>
+  You wouldn't let a kid beat you, though, right?
