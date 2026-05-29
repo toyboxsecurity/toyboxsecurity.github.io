@@ -1,0 +1,28 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Section from '~/components/ui/Section.astro';
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+import Button from '~/components/ui/Button.astro';
+---
+
+<PageLayout title="404 — page not found">
+  <Section spacing="generous" class="min-h-[80vh] flex items-center text-center">
+    <div class="max-w-2xl mx-auto">
+      <p class="font-display text-display-xl uppercase leading-none text-accent drop-shadow-[0_8px_24px_rgba(255,92,57,0.25)]">
+        404
+      </p>
+      <h1 class="font-display text-display-md uppercase mt-4">
+        Booby-trapped page
+      </h1>
+      <p class="text-lg text-ink-muted mt-4">
+        Whatever you were looking for, the kids must've hidden it. While you're
+        here — add ToyBox Security to your Steam wishlist so you don't miss the
+        launch.
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+        <WishlistButton utmMedium="404_page" size="lg" />
+        <Button href="/" variant="secondary" size="lg">Back to safety</Button>
+      </div>
+    </div>
+  </Section>
+</PageLayout>

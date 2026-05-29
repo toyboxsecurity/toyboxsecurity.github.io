@@ -1,0 +1,118 @@
+---
+/**
+ * Internal styleguide — palette swatches, typography samples, button variants.
+ * Lives at /styleguide so you can scan the design system in one view.
+ *
+ * Not linked from the public nav; intended for design QA during development.
+ * Will be deleted (or hidden) once Issue 12 ships.
+ */
+import PageLayout from '~/layouts/PageLayout.astro';
+import Section from '~/components/ui/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+import SocialLinks from '~/components/ui/SocialLinks.astro';
+
+const SWATCHES = [
+  { label: 'Background — dark', token: 'bg-bg-dark', hex: '#1A1410', text: 'text-ink' },
+  { label: 'Background — light', token: 'bg-bg-light', hex: '#F4E8D8', text: 'text-ink-dark' },
+  { label: 'Steam green (CTA only)', token: 'bg-steam-green', hex: '#5DA84B', text: 'text-white' },
+  { label: 'Brand accent (links, hover)', token: 'bg-accent', hex: '#FF5C39', text: 'text-bg-dark' },
+  { label: 'Secondary (badges)', token: 'bg-secondary', hex: '#FFC93C', text: 'text-bg-dark' },
+];
+---
+
+<PageLayout title="Styleguide">
+  <Section spacing="tight" class="pt-32">
+    <h1 class="font-display text-display-lg uppercase">Styleguide</h1>
+    <p class="text-ink-muted mt-3">
+      Design system preview — palette, typography, buttons, social.
+    </p>
+  </Section>
+
+  {/* ---- Palette ---- */}
+  <Section spacing="default" id="palette">
+    <h2 class="font-display text-display-md uppercase mb-8">Palette</h2>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      {SWATCHES.map((s) => (
+        <div class={`${s.token} ${s.text} rounded-xl p-6 h-32 flex flex-col justify-between`}>
+          <span class="text-xs uppercase tracking-widest opacity-80">{s.label}</span>
+          <span class="font-mono text-sm">{s.hex}</span>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  {/* ---- Typography ---- */}
+  <Section spacing="default" id="typography" class="border-t border-ink/10">
+    <h2 class="font-display text-display-md uppercase mb-8">Typography</h2>
+
+    <div class="space-y-10">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-muted mb-2">Display — Bagel Fat One</p>
+        <p class="font-display text-display-xl uppercase">Heist In Progress</p>
+        <p class="font-display text-display-lg uppercase mt-3">Trap-em-up</p>
+        <p class="font-display text-display-md uppercase mt-3">Coming Soon</p>
+      </div>
+
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-muted mb-2">Body — Inter Variable</p>
+        <p class="text-lg leading-relaxed max-w-2xl">
+          ToyBox Security is an online 1–4 player comedy action game where kids defend a home using improvised traps and robbers try to steal everything that isn't nailed down.
+        </p>
+        <p class="text-base text-ink-muted mt-3 max-w-2xl">
+          Smaller muted body copy looks like this — used for supporting text, captions, and metadata.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  {/* ---- Buttons ---- */}
+  <Section spacing="default" id="buttons" class="border-t border-ink/10">
+    <h2 class="font-display text-display-md uppercase mb-8">Buttons</h2>
+
+    <div class="space-y-8">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-muted mb-3">Wishlist (locked Steam green)</p>
+        <div class="flex flex-wrap items-center gap-3">
+          <WishlistButton utmMedium="styleguide_sm" size="sm" />
+          <WishlistButton utmMedium="styleguide_md" size="md" />
+          <WishlistButton utmMedium="styleguide_lg" size="lg" />
+          <WishlistButton utmMedium="styleguide_xl" size="xl" />
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-muted mb-3">Primary (accent)</p>
+        <div class="flex flex-wrap items-center gap-3">
+          <Button size="sm">Primary sm</Button>
+          <Button size="md">Primary md</Button>
+          <Button size="lg">Primary lg</Button>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-muted mb-3">Secondary (outline)</p>
+        <div class="flex flex-wrap items-center gap-3">
+          <Button variant="secondary" size="sm">Secondary sm</Button>
+          <Button variant="secondary" size="md">Secondary md</Button>
+          <Button variant="secondary" size="lg">Secondary lg</Button>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-muted mb-3">Ghost</p>
+        <div class="flex flex-wrap items-center gap-3">
+          <Button variant="ghost" size="sm">Ghost sm</Button>
+          <Button variant="ghost" size="md">Ghost md</Button>
+          <Button variant="ghost" size="lg">Ghost lg</Button>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ---- Social ---- */}
+  <Section spacing="default" id="social" class="border-t border-ink/10">
+    <h2 class="font-display text-display-md uppercase mb-8">Social</h2>
+    <SocialLinks size={28} />
+  </Section>
+</PageLayout>

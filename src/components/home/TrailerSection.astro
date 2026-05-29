@@ -1,0 +1,39 @@
+---
+/**
+ * Homepage trailer + "What is ToyBox Security?" pitch.
+ *
+ * The trailer is a lite-YT-embed facade — no YouTube JS ships until the user
+ * clicks play or the "Watch Trailer" CTA from the hero scrolls them here.
+ */
+import Section from '~/components/ui/Section.astro';
+import YouTubeEmbed from '~/components/ui/YouTubeEmbed.astro';
+import trailerPoster from '~/assets/trailer-poster.jpg';
+import { TRAILER_VIDEO_ID } from '~/consts';
+---
+
+<Section spacing="default" class="border-t border-ink/10 scroll-mt-24">
+  <div class="grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-14 items-center">
+    {/* Trailer — wrapper id MUST be "trailer" so the hero's "Watch Trailer" anchor triggers autoplay. */}
+    <YouTubeEmbed
+      id="trailer"
+      videoId={TRAILER_VIDEO_ID}
+      poster={trailerPoster}
+      title="ToyBox Security — announcement trailer"
+      class="scroll-mt-24"
+    />
+
+    {/* Pitch */}
+    <div class="max-w-prose">
+      <p class="text-xs uppercase tracking-widest text-accent mb-3">The Pitch</p>
+      <h2 class="font-display text-display-md uppercase leading-none">
+        Home Alone,<br />but online.
+      </h2>
+      <p class="text-lg leading-relaxed text-ink-muted mt-6">
+        ToyBox Security is a 4-player online comedy where kids defend a house with
+        improvised traps while robbers try to steal everything that isn't nailed
+        down. Set the perfect ambush, or grab the loot and bolt — before the
+        sirens roll in.
+      </p>
+    </div>
+  </div>
+</Section>

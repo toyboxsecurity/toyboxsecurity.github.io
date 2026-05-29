@@ -1,0 +1,113 @@
+---
+/**
+ * Top navigation. Transparent over the hero, becomes opaque after scroll.
+ * On the homepage the Header sits over the hero — sections below have
+ * top padding accounting for the header height.
+ *
+ * Mobile menu is a simple disclosure (vanilla JS, no framework).
+ */
+import { SITE_TITLE } from '~/consts';
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+
+interface Props {
+  /** When true (homepage), the Header starts transparent and tints in on scroll. */
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+
+const NAV_LINKS = [
+  { label: 'Features', href: '/#features' },
+  { label: 'Screenshots', href: '/#screenshots' },
+  { label: 'News', href: '/news' },
+  { label: 'Press', href: '/press' },
+];
+---
+
+<header
+  data-transparent={transparent ? 'true' : 'false'}
+  class="fixed top-0 left-0 right-0 z-40 transition-colors duration-200 data-[scrolled=true]:bg-bg-dark/95 data-[scrolled=true]:backdrop-blur data-[transparent=false]:bg-bg-dark/95"
+>
+  <div class="container-page flex items-center justify-between gap-4 py-4">
+    <a
+      href="/"
+      class="font-display text-xl tracking-wide text-ink hover:text-accent transition"
+      aria-label={`${SITE_TITLE} — home`}
+    >
+      {SITE_TITLE}
+    </a>
+
+    {/* Desktop nav */}
+    <nav class="hidden md:flex items-center gap-8" aria-label="Primary">
+      {NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm uppercase tracking-widest text-ink/80 hover:text-accent transition"
+        >
+          {link.label}
+        </a>
+      ))}
+      <WishlistButton utmMedium="header" size="sm" />
+    </nav>
+
+    {/* Mobile menu button */}
+    <button
+      type="button"
+      id="mobile-menu-toggle"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+    >
+      <span class="sr-only">Toggle menu</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  {/* Mobile menu panel */}
+  <div
+    id="mobile-menu"
+    hidden
+    class="md:hidden border-t border-ink/10 bg-bg-dark"
+  >
+    <nav class="container-page flex flex-col gap-1 py-4" aria-label="Mobile">
+      {NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class="block py-2 text-base uppercase tracking-widest text-ink/80 hover:text-accent"
+        >
+          {link.label}
+        </a>
+      ))}
+      <div class="pt-3">
+        <WishlistButton utmMedium="mobile_menu" size="md" fullWidth />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const panel = document.getElementById('mobile-menu');
+  if (toggle && panel) {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+    });
+  }
+
+  // Scroll tint — only active when transparent=true (homepage hero).
+  const header = document.querySelector<HTMLElement>('header[data-transparent]');
+  if (header && header.dataset.transparent === 'true') {
+    const onScroll = () => {
+      header.dataset.scrolled = window.scrollY > 40 ? 'true' : 'false';
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

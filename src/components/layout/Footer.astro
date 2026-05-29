@@ -1,0 +1,22 @@
+---
+import { COPYRIGHT, SITE_TITLE } from '~/consts';
+import SocialLinks from '~/components/ui/SocialLinks.astro';
+---
+
+<footer class="border-t border-ink/10 bg-bg-dark/80 py-12 mt-16">
+  <div class="container-page flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
+    <div class="text-center md:text-left">
+      <p class="font-display text-2xl text-ink">{SITE_TITLE}</p>
+      <p class="text-sm text-ink-muted mt-2">{COPYRIGHT}</p>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+      <nav aria-label="Footer" class="flex items-center gap-6 text-sm uppercase tracking-widest text-ink/70">
+        <a href="/" class="hover:text-accent transition">Home</a>
+        <a href="/news" class="hover:text-accent transition">News</a>
+        <a href="/press" class="hover:text-accent transition">Press</a>
+      </nav>
+      <SocialLinks />
+    </div>
+  </div>
+</footer>

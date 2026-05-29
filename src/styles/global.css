@@ -1,0 +1,99 @@
+/*
+ * Global styles for ToyBox Security.
+ *
+ * Tailwind v4 reads design tokens from the @theme block below — Tailwind
+ * utility classes like `bg-bg-dark` or `font-display` come from these
+ * variables, not a tailwind.config.js. Tokens live in one place; the
+ * rest of the codebase composes against them.
+ */
+
+@import "tailwindcss";
+
+/* Self-hosted fonts — no Google Fonts CDN (third-party request, GDPR, latency).
+   Bagel Fat One: Latin-only subpath (avoids the 186-file Korean subset).
+   Inter: default has @font-face for all subsets but unicode-range means a
+   user only downloads the Latin woff2 (~30KB). */
+@import "@fontsource/bagel-fat-one/latin-400.css";
+@import "@fontsource-variable/inter";
+
+@theme {
+  /* ---- palette ---- */
+  --color-bg-dark: #1A1410;          /* warm near-black — "house at night" */
+  --color-bg-light: #F4E8D8;         /* cream — alternating sections, "toy room" */
+  --color-steam-green: #5DA84B;      /* reserved for the wishlist CTA ONLY */
+  --color-steam-green-hover: #6CBE58;
+  --color-accent: #FF5C39;           /* alarm-orange — links, hover strokes, "danger/heist" */
+  --color-accent-hover: #FF7A5C;
+  --color-secondary: #FFC93C;        /* school-bus yellow — badges, highlights */
+  --color-ink: #F4E8D8;              /* default text on dark backgrounds */
+  --color-ink-muted: rgba(244, 232, 216, 0.65);
+  --color-ink-dark: #1A1410;         /* default text on light backgrounds */
+
+  /* ---- typography ---- */
+  --font-display: "Bagel Fat One", system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, sans-serif;
+
+  /* Display font is heavy + decorative — use cautiously and at large sizes. */
+  --text-display-sm: 2rem;
+  --text-display-md: 3rem;
+  --text-display-lg: clamp(2.5rem, 6vw + 1rem, 5.5rem);
+  --text-display-xl: clamp(3rem, 10vw + 1rem, 8rem);
+
+  /* ---- layout ---- */
+  --container-prose: 42rem;
+  --container-page: 72rem;
+}
+
+/* Base resets and defaults */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg-dark);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 400; /* Bagel Fat One only ships 400 — it's already heavy. */
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  /* Respect reduced-motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  /* Selection color matches brand accent. */
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg-dark);
+  }
+}
+
+/* Reusable composition helpers (sparingly — prefer utilities) */
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility container-prose {
+  width: 100%;
+  max-width: var(--container-prose);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}

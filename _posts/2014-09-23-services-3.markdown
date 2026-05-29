@@ -1,9 +1,0 @@
----
-layout: default
-img: shoes.gif
-category: Services
-title: The Importance of... Shoes?
-description: |
----
-As a robber, keeping your shoes is critical to your heist. Once your shoes have been removed via an unfortunate circumstance, you are now open to much more painful traps (rat traps, anyone?)<br><br>
-As a kid, removing the robbers' shoes is paramount to your defense, use glue, tar, or any other sticky substances you find to remove them. <br><br>What other game can you say that about?

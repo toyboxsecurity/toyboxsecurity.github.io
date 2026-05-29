@@ -1,0 +1,69 @@
+---
+/**
+ * The canonical CTA. Steam-green color is RESERVED for this button — players
+ * recognize it. Don't recolor, don't reuse Steam-green elsewhere.
+ *
+ * `utmMedium` is appended to the wishlist URL so GA4 can distinguish where on
+ * the site the click came from (hero_cta / sticky_bar / callout_band / footer / 404 / etc.)
+ */
+import { STEAM_WISHLIST_URL } from '~/consts';
+
+type Size = 'sm' | 'md' | 'lg' | 'xl';
+
+interface Props {
+  /** UTM medium tag — required so we can tell hero clicks from sticky-bar clicks in GA4. */
+  utmMedium: string;
+  size?: Size;
+  /** Override the default label, e.g. for the 404 page. */
+  label?: string;
+  /** Extra Tailwind classes appended. */
+  class?: string;
+  /** Render full-width (useful on mobile or in sticky bars). */
+  fullWidth?: boolean;
+}
+
+const {
+  utmMedium,
+  size = 'lg',
+  label = 'Wishlist on Steam',
+  class: extraClass = '',
+  fullWidth = false,
+} = Astro.props;
+
+const sizes: Record<Size, string> = {
+  sm: 'text-sm px-3 py-1.5',
+  md: 'text-base px-5 py-2.5',
+  lg: 'text-lg px-7 py-3.5',
+  xl: 'text-xl px-10 py-4',
+};
+
+const base =
+  'inline-flex items-center justify-center gap-2.5 rounded-lg font-semibold tracking-wide uppercase transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-dark hover:-translate-y-0.5 active:translate-y-0 shadow-lg';
+
+const colors =
+  'bg-steam-green text-white shadow-steam-green/30 hover:bg-steam-green-hover focus-visible:ring-steam-green';
+
+const widthClass = fullWidth ? 'w-full' : '';
+
+const href = STEAM_WISHLIST_URL(utmMedium);
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-wishlist-cta={utmMedium}
+  class={`${base} ${colors} ${sizes[size]} ${widthClass} ${extraClass}`.trim()}
+>
+  {/* Steam logo (inline SVG — no Font Awesome) */}
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 256 256"
+    width="22"
+    height="22"
+    fill="currentColor"
+  >
+    <path d="M127.78 0C60.42 0 5.24 52.32.36 118.69l68.74 28.45a36.05 36.05 0 0 1 20.36-6.26c.67 0 1.34.03 2 .07l30.59-44.32v-.62c0-26.74 21.74-48.49 48.5-48.49 26.75 0 48.49 21.76 48.49 48.5s-21.75 48.51-48.5 48.51h-1.13l-43.66 31.16c0 .57.04 1.13.04 1.7 0 19.99-16.27 36.26-36.26 36.26-17.55 0-32.21-12.55-35.56-29.13L4.31 164.06c15.21 53.79 64.66 93.21 123.47 93.21 70.84 0 128.28-57.43 128.28-128.28C256 57.4 198.6 0 127.78 0M80.39 194.45l-15.74-6.51c2.79 5.81 7.63 10.69 14.04 13.36 13.84 5.78 29.85-.78 35.64-14.64a27.3 27.3 0 0 0 .03-20.95c-2.69-6.45-7.74-11.49-14.21-14.18-6.42-2.67-13.27-2.57-19.32-.45l16.26 6.73c10.21 4.26 15.04 16 10.78 26.21-4.24 10.21-15.99 15.04-26.19 10.78zm130.34-97.93c0-17.82-14.5-32.32-32.33-32.32-17.84 0-32.34 14.5-32.34 32.32 0 17.83 14.5 32.33 32.34 32.33 17.83 0 32.33-14.5 32.33-32.33m-56.6-.06c0-13.43 10.89-24.32 24.32-24.32 13.42 0 24.32 10.89 24.32 24.32 0 13.42-10.9 24.32-24.32 24.32-13.43 0-24.32-10.9-24.32-24.32"/>
+  </svg>
+  <span>{label}</span>
+</a>

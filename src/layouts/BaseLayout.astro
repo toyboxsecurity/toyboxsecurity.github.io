@@ -1,0 +1,33 @@
+---
+/**
+ * Bare HTML wrapper. Use PageLayout for normal pages — this is for
+ * specialized routes (404, RSS-driven pages) that opt out of the
+ * Header/Footer chrome.
+ */
+import BaseHead from '~/components/seo/BaseHead.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImagePath?: string;
+  jsonLd?: string;
+}
+
+const { title, description, ogImagePath, jsonLd } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      ogImagePath={ogImagePath}
+      jsonLd={jsonLd}
+    />
+    <slot name="head-extra" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

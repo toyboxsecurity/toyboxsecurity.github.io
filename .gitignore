@@ -1,1 +1,18 @@
+# Jekyll (legacy — removed in Issue 3)
 _site
+.jekyll-cache
+
+# Node / Astro
+node_modules
+dist
+.astro
+
+# Env / editor
+.env
+.env.production
+.DS_Store
+*.log
+npm-debug.log*
+
+# OS
+Thumbs.db

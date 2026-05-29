@@ -1,0 +1,108 @@
+---
+/**
+ * Homepage hero — the conversion engine.
+ *
+ * 100vh full-bleed background art, darkened with a gradient so the wordmark
+ * and CTAs read against any pixel of the image. Centered, vertically stacked.
+ * The big Wishlist button here is the "real" CTA — the sticky bar that
+ * appears after scroll is the safety net.
+ *
+ * "Watch Trailer" anchors to #trailer, which the YouTubeEmbed listens for
+ * and starts playback automatically.
+ */
+import { Image } from 'astro:assets';
+import Section from '~/components/ui/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+import heroBackground from '~/assets/backgrounds/trailer-promo-bg.png';
+import wordmark from '~/assets/logos/wordmark.png';
+---
+
+<header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  {/* Background art */}
+  <Image
+    src={heroBackground}
+    alt=""
+    widths={[768, 1280, 1920, 2560]}
+    sizes="100vw"
+    quality={80}
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 w-full h-full object-cover -z-10"
+  />
+
+  {/* Gradient overlay — guarantees text contrast over any frame of the art */}
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-b from-bg-dark/30 via-bg-dark/55 to-bg-dark"
+    aria-hidden="true"
+  />
+
+  {/* Vignette for extra side darkening on wide screens */}
+  <div
+    class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(26,20,16,0.55)_100%)]"
+    aria-hidden="true"
+  />
+
+  <Section spacing="generous" width="page" class="relative z-10 text-center">
+    {/* Wordmark — H1 for SEO, but it's an image so the visual weight comes from the file */}
+    <h1 class="flex justify-center">
+      <Image
+        src={wordmark}
+        alt="ToyBox Security"
+        widths={[480, 720, 960]}
+        sizes="(min-width: 768px) 720px, 80vw"
+        loading="eager"
+        fetchpriority="high"
+        class="w-full max-w-xl drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)]"
+      />
+    </h1>
+
+    {/* Tagline */}
+    <p class="mt-8 font-display uppercase text-display-sm md:text-display-md text-ink drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] leading-[1.05]">
+      Set traps. Steal stuff.<br />Don't get caught.
+    </p>
+
+    {/* CTAs */}
+    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <WishlistButton utmMedium="hero_cta" size="xl" />
+      <Button href="#trailer" variant="secondary" size="lg">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Watch Trailer
+      </Button>
+    </div>
+
+    {/* Coming soon subtext */}
+    <p class="mt-8 text-xs uppercase tracking-[0.25em] text-ink-muted">
+      Coming soon to Steam
+    </p>
+  </Section>
+
+  {/* Scroll affordance */}
+  <a
+    href="#trailer"
+    aria-label="Scroll to trailer"
+    class="hero-chevron absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-ink/70 hover:text-accent transition-colors focus-visible:outline-none focus-visible:text-accent"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  </a>
+
+  {/* IntersectionObserver sentinel — when this leaves the viewport, the sticky CTA bar tints in */}
+  <div data-hero-sentinel class="absolute bottom-0 left-0 right-0 h-1 pointer-events-none" aria-hidden="true" />
+</header>
+
+<style>
+  @keyframes hero-chevron-bounce {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 6px); }
+  }
+  .hero-chevron {
+    animation: hero-chevron-bounce 2.4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-chevron { animation: none; }
+  }
+</style>

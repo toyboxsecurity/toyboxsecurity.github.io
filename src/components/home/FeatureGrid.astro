@@ -1,0 +1,20 @@
+---
+import Section from '~/components/ui/Section.astro';
+import FeatureCard from '~/components/home/FeatureCard.astro';
+import { FEATURES } from '~/data/features';
+---
+
+<Section id="features" spacing="default" variant="dark" class="border-t border-ink/10">
+  <div class="text-center mb-12">
+    <p class="text-xs uppercase tracking-widest text-accent mb-3">Features</p>
+    <h2 class="font-display text-display-md uppercase leading-none">What's in the box</h2>
+  </div>
+
+  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {FEATURES.map((feature) => (
+      <li class="flex">
+        <FeatureCard feature={feature} />
+      </li>
+    ))}
+  </ul>
+</Section>

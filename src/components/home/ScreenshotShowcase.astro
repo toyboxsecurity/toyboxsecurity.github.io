@@ -1,0 +1,204 @@
+---
+/**
+ * Screenshots gallery.
+ * - Desktop (≥md): masonry-ish 3-column grid.
+ * - Mobile (<md): horizontal scroll-snap carousel with vanilla CSS — no library.
+ *
+ * Clicking any thumbnail opens a vanilla lightbox. ESC closes; click-outside closes.
+ * The whole thing is one self-contained component with inline JS.
+ */
+import { Image } from 'astro:assets';
+import Section from '~/components/ui/Section.astro';
+import { SCREENSHOTS } from '~/data/screenshots';
+
+interface Props {
+  /** Section id (anchor target). */
+  id?: string;
+  /** Heading rendered above the grid. Pass null to omit. */
+  heading?: string | null;
+}
+
+const { id = 'screenshots', heading = 'Screenshots' } = Astro.props;
+---
+
+<Section id={id} spacing="default" variant="dark" class="border-t border-ink/10">
+  {heading && (
+    <div class="text-center mb-12">
+      <p class="text-xs uppercase tracking-widest text-accent mb-3">Look at it</p>
+      <h2 class="font-display text-display-md uppercase">{heading}</h2>
+    </div>
+  )}
+
+  {/* Mobile carousel — scroll-snap, no library */}
+  <div class="md:hidden -mx-5 px-5 overflow-x-auto snap-x snap-mandatory flex gap-4 pb-4">
+    {SCREENSHOTS.map((shot, i) => (
+      <button
+        type="button"
+        class="screenshot-thumb shrink-0 w-[85%] snap-start rounded-xl overflow-hidden bg-bg-light/5 ring-1 ring-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        data-idx={i}
+        aria-label={`Open ${shot.alt} fullscreen`}
+      >
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          widths={[480, 720]}
+          sizes="85vw"
+          loading="lazy"
+          class="w-full h-full object-cover aspect-video"
+        />
+      </button>
+    ))}
+  </div>
+
+  {/* Desktop grid */}
+  <div class="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-4">
+    {SCREENSHOTS.map((shot, i) => (
+      <button
+        type="button"
+        class="screenshot-thumb group rounded-xl overflow-hidden bg-bg-light/5 ring-1 ring-ink/10 transition hover:ring-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        data-idx={i}
+        aria-label={`Open ${shot.alt} fullscreen`}
+      >
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 360px, 50vw"
+          loading="lazy"
+          class="w-full h-full object-cover aspect-video transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      </button>
+    ))}
+  </div>
+</Section>
+
+{/* Lightbox overlay — hidden until JS opens it */}
+<div
+  id="screenshot-lightbox"
+  hidden
+  class="fixed inset-0 z-50 flex items-center justify-center bg-bg-dark/95 backdrop-blur p-4 sm:p-8"
+  aria-modal="true"
+  role="dialog"
+  aria-label="Screenshot preview"
+>
+  <button
+    type="button"
+    id="lightbox-close"
+    aria-label="Close screenshot"
+    class="absolute top-4 right-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-bg-dark/80 text-ink hover:bg-accent hover:text-bg-dark transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  </button>
+
+  <button
+    type="button"
+    id="lightbox-prev"
+    aria-label="Previous screenshot"
+    class="absolute left-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-12 h-12 rounded-full bg-bg-dark/80 text-ink hover:bg-accent hover:text-bg-dark transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6" />
+    </svg>
+  </button>
+
+  <button
+    type="button"
+    id="lightbox-next"
+    aria-label="Next screenshot"
+    class="absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-12 h-12 rounded-full bg-bg-dark/80 text-ink hover:bg-accent hover:text-bg-dark transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  </button>
+
+  <img id="lightbox-image" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" />
+</div>
+
+<script>
+  const overlay = document.getElementById('screenshot-lightbox') as HTMLElement | null;
+  const img = document.getElementById('lightbox-image') as HTMLImageElement | null;
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+  const thumbs = Array.from(document.querySelectorAll<HTMLButtonElement>('.screenshot-thumb'));
+
+  if (overlay && img) {
+    // Build a deduped list of {src, alt} from the rendered thumbs.
+    // (Each thumb's <img> already has a srcset; for the lightbox we just use the largest src.)
+    const slides = thumbs.map((btn) => {
+      const i = btn.querySelector('img');
+      return {
+        src: i?.currentSrc || i?.src || '',
+        alt: i?.alt || '',
+      };
+    });
+
+    // The DOM has two thumb sets (mobile + desktop) for the same screenshots — dedupe by idx.
+    const byIdx = new Map<number, { src: string; alt: string }>();
+    thumbs.forEach((btn) => {
+      const idx = Number(btn.dataset.idx);
+      if (!Number.isNaN(idx) && !byIdx.has(idx)) {
+        const i = btn.querySelector('img');
+        byIdx.set(idx, { src: i?.currentSrc || i?.src || '', alt: i?.alt || '' });
+      }
+    });
+    const ordered = Array.from(byIdx.entries()).sort((a, b) => a[0] - b[0]).map(([, v]) => v);
+
+    let current = 0;
+
+    const render = () => {
+      const slide = ordered[current];
+      if (slide) {
+        img.src = slide.src;
+        img.alt = slide.alt;
+      }
+    };
+
+    const open = (idx: number) => {
+      current = idx;
+      render();
+      overlay.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+      overlay.hidden = true;
+      document.documentElement.style.overflow = '';
+    };
+
+    const next = () => {
+      current = (current + 1) % ordered.length;
+      render();
+    };
+    const prev = () => {
+      current = (current - 1 + ordered.length) % ordered.length;
+      render();
+    };
+
+    thumbs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.idx);
+        if (!Number.isNaN(idx)) open(idx);
+      });
+    });
+
+    closeBtn?.addEventListener('click', close);
+    nextBtn?.addEventListener('click', next);
+    prevBtn?.addEventListener('click', prev);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (overlay.hidden) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') next();
+      else if (e.key === 'ArrowLeft') prev();
+    });
+  }
+</script>

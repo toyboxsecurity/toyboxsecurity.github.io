@@ -1,0 +1,268 @@
+---
+import { Image } from 'astro:assets';
+import PageLayout from '~/layouts/PageLayout.astro';
+import Section from '~/components/ui/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+import SocialLinks from '~/components/ui/SocialLinks.astro';
+import YouTubeEmbed from '~/components/ui/YouTubeEmbed.astro';
+import ScreenshotShowcase from '~/components/home/ScreenshotShowcase.astro';
+
+import trailerPoster from '~/assets/trailer-poster.jpg';
+import wordmark from '~/assets/logos/wordmark.png';
+import pressLogo from '~/assets/logos/press-logo.png';
+import pressLogoAlt from '~/assets/logos/press-logo-alt.png';
+import icon from '~/assets/logos/icon.png';
+
+import {
+  FACTSHEET,
+  DESCRIPTION,
+  HISTORY,
+  FEATURES_BULLETS,
+  ABOUT_STUDIO,
+  PRESS_DOWNLOADS,
+  STEAM_PAGE,
+} from '~/data/press';
+import { SITE_TITLE, TRAILER_VIDEO_ID, SOCIAL_LINKS, CONTACT_EMAIL } from '~/consts';
+
+const TOC = [
+  { id: 'factsheet', label: 'Factsheet' },
+  { id: 'description', label: 'Description' },
+  { id: 'history', label: 'History' },
+  { id: 'features', label: 'Features' },
+  { id: 'trailer', label: 'Trailer' },
+  { id: 'screenshots', label: 'Screenshots' },
+  { id: 'logos', label: 'Logos & Icon' },
+  { id: 'downloads', label: 'Downloads' },
+  { id: 'about', label: 'About thatcozydev' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const LOGO_DOWNLOADS = [
+  { src: wordmark, alt: 'ToyBox Security wordmark', label: 'Wordmark (transparent PNG)', href: '/press/toyboxsecurity-logos.zip' },
+  { src: pressLogo, alt: 'ToyBox Security primary press logo', label: 'Primary logo', href: '/press/toyboxsecurity-logos.zip' },
+  { src: pressLogoAlt, alt: 'ToyBox Security alternate press logo', label: 'Alternate logo', href: '/press/toyboxsecurity-logos.zip' },
+  { src: icon, alt: 'ToyBox Security icon', label: 'Icon', href: '/press/toyboxsecurity-logos.zip' },
+];
+---
+
+<PageLayout
+  title="Press kit"
+  description={`Press kit for ${SITE_TITLE} — factsheet, description, screenshots, logos, and contact information.`}
+>
+  <Section spacing="default" class="pt-32">
+    {/* Hero */}
+    <div class="text-center mb-12">
+      <p class="text-xs uppercase tracking-widest text-accent mb-3">Press kit</p>
+      <h1 class="font-display text-display-lg uppercase leading-[0.95]">{SITE_TITLE}</h1>
+      <p class="text-ink-muted mt-4 max-w-prose mx-auto">
+        Everything you need to cover {SITE_TITLE} — factsheet, screenshots,
+        logos, and a direct line to the developer.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <WishlistButton utmMedium="press_hero" size="md" />
+        <Button href={STEAM_PAGE} variant="secondary" size="md" external>
+          Steam store page
+        </Button>
+      </div>
+    </div>
+
+    {/* TOC */}
+    <nav aria-label="Press kit sections" class="rounded-xl bg-bg-light/[0.04] ring-1 ring-ink/10 p-6 mb-12">
+      <p class="text-xs uppercase tracking-widest text-ink-muted mb-3">Jump to</p>
+      <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        {TOC.map((item) => (
+          <li>
+            <a href={`#${item.id}`} class="text-ink/85 hover:text-accent transition">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </Section>
+
+  {/* Factsheet + Description side-by-side on desktop */}
+  <Section spacing="default" variant="dark" class="border-t border-ink/10">
+    <div class="grid lg:grid-cols-[1fr_2fr] gap-10">
+      {/* Factsheet */}
+      <aside id="factsheet" class="scroll-mt-24 rounded-xl bg-bg-light/[0.04] ring-1 ring-ink/10 p-6">
+        <h2 class="font-display text-2xl uppercase mb-6">Factsheet</h2>
+        <dl class="space-y-4 text-sm">
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Developer</dt>
+            <dd>{FACTSHEET.developer}<br/><span class="text-ink-muted">Based in {FACTSHEET.basedIn}</span></dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Publisher</dt>
+            <dd>{FACTSHEET.publisher}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Release date</dt>
+            <dd>{FACTSHEET.releaseDate}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Platforms</dt>
+            <dd>
+              <ul>
+                {FACTSHEET.platforms.map((p) => <li>{p}</li>)}
+              </ul>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Price</dt>
+            <dd>{FACTSHEET.regularPrice.usd} (USD) / {FACTSHEET.regularPrice.eur} (EUR)</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Website</dt>
+            <dd><a href={FACTSHEET.website} class="text-accent hover:text-accent-hover transition">{FACTSHEET.website}</a></dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Press contact</dt>
+            <dd><a href={`mailto:${FACTSHEET.pressContact}`} class="text-accent hover:text-accent-hover transition">{FACTSHEET.pressContact}</a></dd>
+          </div>
+        </dl>
+      </aside>
+
+      {/* Description + History + Features */}
+      <div class="space-y-12">
+        <div id="description" class="scroll-mt-24">
+          <h2 class="font-display text-3xl uppercase mb-4">Description</h2>
+          <p class="text-lg leading-relaxed">{DESCRIPTION}</p>
+        </div>
+
+        <div id="history" class="scroll-mt-24">
+          <h2 class="font-display text-3xl uppercase mb-4">History</h2>
+          <p class="leading-relaxed text-ink-muted">{HISTORY}</p>
+        </div>
+
+        <div id="features" class="scroll-mt-24">
+          <h2 class="font-display text-3xl uppercase mb-4">Features</h2>
+          <ul class="space-y-2 text-ink-muted">
+            {FEATURES_BULLETS.map((bullet) => (
+              <li class="pl-5 relative leading-relaxed before:content-['▸'] before:text-accent before:absolute before:left-0">
+                {bullet}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* Trailer */}
+  <Section spacing="default" class="border-t border-ink/10">
+    <div id="trailer" class="scroll-mt-24 max-w-4xl mx-auto">
+      <h2 class="font-display text-display-md uppercase mb-6 text-center">Trailer</h2>
+      <YouTubeEmbed
+        videoId={TRAILER_VIDEO_ID}
+        poster={trailerPoster}
+        title={`${SITE_TITLE} — announcement trailer`}
+      />
+    </div>
+  </Section>
+
+  {/* Screenshots — reuses the same showcase used on the homepage */}
+  <ScreenshotShowcase heading="Screenshots" />
+
+  {/* Logos */}
+  <Section spacing="default" class="border-t border-ink/10">
+    <div id="logos" class="scroll-mt-24">
+      <div class="flex items-end justify-between flex-wrap gap-4 mb-8">
+        <h2 class="font-display text-display-md uppercase">Logos & Icon</h2>
+        <a
+          href="/press/toyboxsecurity-logos.zip"
+          class="text-sm uppercase tracking-widest text-accent hover:text-accent-hover transition"
+        >
+          Download all (.zip) →
+        </a>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {LOGO_DOWNLOADS.map((logo) => (
+          <a
+            href={logo.href}
+            class="group rounded-xl bg-bg-light p-6 flex flex-col items-center justify-center gap-3 hover:ring-2 hover:ring-accent transition"
+          >
+            <Image
+              src={logo.src}
+              alt={logo.alt}
+              widths={[200, 400]}
+              sizes="200px"
+              class="max-h-24 w-auto object-contain"
+            />
+            <span class="text-xs uppercase tracking-widest text-ink-dark text-center">{logo.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </Section>
+
+  {/* Downloads */}
+  <Section spacing="default" variant="dark" class="border-t border-ink/10">
+    <div id="downloads" class="scroll-mt-24">
+      <h2 class="font-display text-display-md uppercase mb-8">Downloads</h2>
+      <ul class="grid sm:grid-cols-2 gap-4">
+        {PRESS_DOWNLOADS.map((dl) => (
+          <li>
+            <a
+              href={dl.href}
+              class="flex items-center gap-4 rounded-xl bg-bg-light/[0.04] ring-1 ring-ink/10 p-5 hover:ring-accent transition"
+            >
+              <svg class="text-accent shrink-0" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <div>
+                <p class="font-semibold">{dl.label}</p>
+                {dl.bytesHint && <p class="text-xs text-ink-muted mt-0.5">{dl.bytesHint}</p>}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* About + Contact side-by-side */}
+  <Section spacing="default" class="border-t border-ink/10">
+    <div class="grid md:grid-cols-2 gap-10">
+      <div id="about" class="scroll-mt-24">
+        <h2 class="font-display text-3xl uppercase mb-4">About thatcozydev</h2>
+        <p class="leading-relaxed text-ink-muted">{ABOUT_STUDIO}</p>
+      </div>
+
+      <div id="contact" class="scroll-mt-24">
+        <h2 class="font-display text-3xl uppercase mb-4">Contact</h2>
+        <dl class="space-y-3 text-sm">
+          <div>
+            <dt class="text-xs uppercase tracking-widest text-ink-muted">Inquiries</dt>
+            <dd><a href={`mailto:${CONTACT_EMAIL}`} class="text-accent hover:text-accent-hover transition">{CONTACT_EMAIL}</a></dd>
+          </div>
+          {SOCIAL_LINKS.map((s) => (
+            <div>
+              <dt class="text-xs uppercase tracking-widest text-ink-muted">{s.title}</dt>
+              <dd>
+                <a href={s.url} class="text-accent hover:text-accent-hover transition" target="_blank" rel="noopener noreferrer">
+                  {s.handle}
+                </a>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <div class="mt-6">
+          <SocialLinks />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* Closing wishlist */}
+  <Section spacing="default" variant="accent" class="text-center">
+    <h2 class="font-display text-display-md uppercase">Want to be notified?</h2>
+    <p class="mt-4">Add it to your Steam wishlist — you'll get an email the day it launches.</p>
+    <div class="mt-8 flex justify-center">
+      <WishlistButton utmMedium="press_footer" size="xl" />
+    </div>
+  </Section>
+</PageLayout>

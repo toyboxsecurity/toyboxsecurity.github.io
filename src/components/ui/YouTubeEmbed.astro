@@ -1,0 +1,96 @@
+---
+/**
+ * Lite YouTube embed — facade pattern.
+ *
+ * On initial paint we ship only a poster image + a play button. The real
+ * YouTube iframe (and its ~500KB of JS) only loads when the user clicks
+ * play, navigates here via the #trailer hash, or when the parent dispatches
+ * a `youtubeembed:play` event.
+ *
+ * Inspired by paulirish/lite-youtube-embed but no third-party dependency.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  videoId: string;
+  /** Local poster image — runs through Astro's image pipeline. */
+  poster: ImageMetadata;
+  /** Alt + accessible name. e.g. "ToyBox Security announcement trailer". */
+  title: string;
+  /** Anchor id on the wrapper so smooth-scroll targets us. */
+  id?: string;
+  /** Optional class on the outer wrapper. */
+  class?: string;
+}
+
+const { videoId, poster, title, id, class: extraClass = '' } = Astro.props;
+---
+
+<div
+  id={id}
+  data-yt-id={videoId}
+  class={`yt-embed group relative w-full overflow-hidden rounded-2xl bg-black shadow-2xl ${extraClass}`.trim()}
+  style="aspect-ratio: 16 / 9;"
+>
+  <button
+    type="button"
+    class="yt-embed__poster absolute inset-0 cursor-pointer w-full h-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent"
+    aria-label={`Play: ${title}`}
+  >
+    <Image
+      src={poster}
+      alt=""
+      widths={[640, 960, 1280, 1920]}
+      sizes="(min-width: 1024px) 960px, 100vw"
+      class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+      loading="lazy"
+    />
+    {/* Darken on hover so the play button pops */}
+    <span class="absolute inset-0 bg-bg-dark/30 transition-colors group-hover:bg-bg-dark/40" aria-hidden="true" />
+    {/* Play badge */}
+    <span
+      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-accent text-bg-dark shadow-2xl transition-transform group-hover:scale-110"
+      style="width: clamp(64px, 10vw, 96px); height: clamp(64px, 10vw, 96px);"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" width="40%" height="40%">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </span>
+  </button>
+</div>
+
+<script>
+  // Vanilla: replace the poster with the real iframe on demand.
+  document.querySelectorAll<HTMLElement>('.yt-embed').forEach((el) => {
+    const id = el.dataset.ytId;
+    if (!id) return;
+
+    const play = () => {
+      if (el.dataset.playing === 'true') return;
+      el.dataset.playing = 'true';
+
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+      iframe.title = 'YouTube video player';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.className = 'absolute inset-0 w-full h-full border-0';
+      el.appendChild(iframe);
+      el.querySelector('.yt-embed__poster')?.remove();
+    };
+
+    el.querySelector('.yt-embed__poster')?.addEventListener('click', play);
+    el.addEventListener('youtubeembed:play', play);
+
+    // Honor #trailer (or whatever the wrapper id is) on initial load + future hash changes.
+    if (el.id) {
+      const checkHash = () => {
+        if (window.location.hash === `#${el.id}`) play();
+      };
+      checkHash();
+      window.addEventListener('hashchange', checkHash);
+    }
+  });
+</script>

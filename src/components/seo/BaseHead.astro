@@ -1,0 +1,83 @@
+---
+/**
+ * Centralized <head> metadata: title, description, OG, Twitter Card, GA4 stub,
+ * favicon, canonical, sitemap, JSON-LD slot.
+ *
+ * Pages pass in only the per-page bits (title, description, og image override,
+ * JSON-LD). Defaults pull from src/consts.ts.
+ */
+import '~/styles/global.css';
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL, GA_MEASUREMENT_ID } from '~/consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path under /og/ (e.g. "default-og.jpg"). Optional. Lands in Issue 11. */
+  ogImagePath?: string;
+  /** Used to mark canonical + og:url. Defaults to current pathname when omitted. */
+  pathname?: string;
+  /** Optional JSON-LD blob (already JSON-stringified). Used on pages like the homepage VideoGame schema. */
+  jsonLd?: string;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  ogImagePath = 'default-og.jpg',
+  pathname = Astro.url.pathname,
+  jsonLd,
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${SITE_TITLE}` : SITE_TITLE;
+const canonical = new URL(pathname, SITE_URL).toString();
+const ogImage = new URL(`/og/${ogImagePath}`, SITE_URL).toString();
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+
+<!-- Sitemap -->
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={SITE_TITLE} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@ToyBoxSecurity" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- Theme color (browser chrome on mobile) -->
+<meta name="theme-color" content="#1A1410" />
+
+{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+
+{/* GA4 — production only. */}
+{import.meta.env.PROD && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+    <script is:inline define:vars={{ id: GA_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', id, { anonymize_ip: true });
+    </script>
+  </>
+)}

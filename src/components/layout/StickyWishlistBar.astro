@@ -1,0 +1,41 @@
+---
+/**
+ * Mobile-only sticky bottom bar that surfaces the wishlist CTA after the
+ * user has scrolled past the hero. On desktop the Header already serves
+ * this role (small WishlistButton in the right side of the nav once the
+ * Header tints in), so this component is `md:hidden`.
+ *
+ * Activation: an IntersectionObserver watches the `[data-hero-sentinel]`
+ * inside the Hero component. Once the sentinel leaves the viewport, we
+ * set `data-state="visible"` on this element.
+ */
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+---
+
+<div
+  id="sticky-wishlist-bar"
+  data-state="hidden"
+  class="md:hidden fixed bottom-0 left-0 right-0 z-30 transform-gpu translate-y-full transition-transform duration-200 ease-out data-[state=visible]:translate-y-0 bg-bg-dark/95 backdrop-blur border-t border-ink/10 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+>
+  <WishlistButton utmMedium="sticky_bar_mobile" size="lg" fullWidth />
+</div>
+
+<script>
+  const bar = document.getElementById('sticky-wishlist-bar');
+  const sentinel = document.querySelector<HTMLElement>('[data-hero-sentinel]');
+
+  if (bar && sentinel) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        // entries[0].isIntersecting === true means the sentinel (and therefore
+        // the bottom of the hero) is still in view → hide the bar.
+        bar.dataset.state = entries[0].isIntersecting ? 'hidden' : 'visible';
+      },
+      { rootMargin: '0px', threshold: 0 }
+    );
+    io.observe(sentinel);
+  } else if (bar) {
+    // No hero on this page (404, /press, /news, etc.) → show by default.
+    bar.dataset.state = 'visible';
+  }
+</script>

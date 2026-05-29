@@ -1,0 +1,53 @@
+---
+/**
+ * Section primitive — vertical rhythm + container width in one place.
+ * Use this for every full-width band on the homepage.
+ */
+type Variant = 'dark' | 'light' | 'accent' | 'transparent';
+
+interface Props {
+  id?: string;
+  variant?: Variant;
+  /** Vertical padding. tight ≈ 4rem; default ≈ 6rem; generous ≈ 9rem. */
+  spacing?: 'tight' | 'default' | 'generous';
+  /** Container width — 'page' (default, 72rem) or 'prose' (42rem) or 'full'. */
+  width?: 'page' | 'prose' | 'full';
+  class?: string;
+}
+
+const {
+  id,
+  variant = 'transparent',
+  spacing = 'default',
+  width = 'page',
+  class: extraClass = '',
+} = Astro.props;
+
+const variantClasses: Record<Variant, string> = {
+  dark: 'bg-bg-dark text-ink',
+  light: 'bg-bg-light text-ink-dark',
+  accent: 'bg-accent text-bg-dark',
+  transparent: '',
+};
+
+const spacingClasses = {
+  tight: 'py-16',
+  default: 'py-24 md:py-28',
+  generous: 'py-32 md:py-40',
+};
+
+const widthClasses = {
+  page: 'container-page',
+  prose: 'container-prose',
+  full: 'w-full px-5',
+};
+---
+
+<section
+  id={id}
+  class={`${variantClasses[variant]} ${spacingClasses[spacing]} ${extraClass}`.trim()}
+>
+  <div class={widthClasses[width]}>
+    <slot />
+  </div>
+</section>
