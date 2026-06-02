@@ -15,8 +15,11 @@ import WishlistButton from '~/components/ui/WishlistButton.astro';
 <div
   id="sticky-wishlist-bar"
   data-state="hidden"
-  class="md:hidden fixed bottom-0 left-0 right-0 z-30 transform-gpu translate-y-full transition-transform duration-200 ease-out data-[state=visible]:translate-y-0 bg-bg-dark/95 backdrop-blur border-t border-ink/10 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+  class="md:hidden fixed bottom-0 left-0 right-0 z-30 transform-gpu translate-y-full transition-transform duration-200 ease-out data-[state=visible]:translate-y-0 bg-bg-dark/95 backdrop-blur border-t border-ink/10 px-4 pt-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
 >
+  <p class="text-[10px] uppercase tracking-[0.25em] text-ink-muted text-center mb-1.5">
+    Coming soon to Steam
+  </p>
   <WishlistButton utmMedium="sticky_bar_mobile" size="lg" fullWidth />
 </div>
 

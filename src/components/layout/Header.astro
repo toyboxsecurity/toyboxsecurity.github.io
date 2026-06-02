@@ -8,6 +8,7 @@
  */
 import { SITE_TITLE } from '~/consts';
 import WishlistButton from '~/components/ui/WishlistButton.astro';
+import SocialLinks from '~/components/ui/SocialLinks.astro';
 
 interface Props {
   /** When true (homepage), the Header starts transparent and tints in on scroll. */
@@ -38,7 +39,7 @@ const NAV_LINKS = [
     </a>
 
     {/* Desktop nav */}
-    <nav class="hidden md:flex items-center gap-8" aria-label="Primary">
+    <nav class="hidden md:flex items-center gap-6 lg:gap-8" aria-label="Primary">
       {NAV_LINKS.map((link) => (
         <a
           href={link.href}
@@ -47,6 +48,7 @@ const NAV_LINKS = [
           {link.label}
         </a>
       ))}
+      <SocialLinks size={18} class="ml-2 border-l border-ink/15 pl-6" />
       <WishlistButton utmMedium="header" size="sm" />
     </nav>
 
@@ -82,6 +84,9 @@ const NAV_LINKS = [
           {link.label}
         </a>
       ))}
+      <div class="pt-4 pb-2 border-t border-ink/10 mt-2">
+        <SocialLinks size={22} />
+      </div>
       <div class="pt-3">
         <WishlistButton utmMedium="mobile_menu" size="md" fullWidth />
       </div>
