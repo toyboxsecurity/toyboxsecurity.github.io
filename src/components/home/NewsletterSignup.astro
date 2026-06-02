@@ -1,21 +1,14 @@
 ---
 /**
- * Newsletter signup — posts directly to the existing Brevo (SendInBlue)
- * serve endpoint. Replaces the legacy iframe.
- *
- * IMPORTANT (Issue 8 verification):
- * The hidden inputs below are the standard Brevo signup-form fields.
- * Before publishing, the owner should:
- *   1. Open the legacy iframe URL in a browser
- *   2. Inspect the rendered form's <input> elements in DevTools
- *   3. Diff the hidden field names/values against this component
- *   4. If anything differs, paste the actual field list to me and I'll update.
+ * Newsletter signup — posts directly to Brevo's serve endpoint.
+ * Form fields verified against the current Brevo embed snippet.
  *
  * Submission flow:
  *  - Baseline: real HTML form POSTs to Brevo; browser navigates to Brevo's
- *    thank-you page on success. Works with JS disabled.
- *  - Enhanced: JS intercepts, does no-cors fetch, shows inline success message.
- *    Falls back to real-form navigation if fetch fails.
+ *    default thank-you page on success. Works with JS disabled.
+ *  - Enhanced: JS intercepts, does a no-cors fetch (Brevo returns a 302 we
+ *    can't read, so we optimistically treat resolution as success), shows
+ *    inline success message. Falls back to real-form submit if fetch fails.
  */
 import Section from '~/components/ui/Section.astro';
 import { SENDINBLUE_ACTION_URL } from '~/consts';
@@ -63,9 +56,8 @@ import { SENDINBLUE_ACTION_URL } from '~/consts';
         aria-hidden="true"
       />
 
-      {/* Brevo standard hidden fields. Verify against the legacy iframe. */}
+      {/* Brevo hidden fields — matches the form's embed snippet exactly. */}
       <input type="hidden" name="locale" value="en" />
-      <input type="hidden" name="html_type" value="simple" />
 
       <button
         type="submit"

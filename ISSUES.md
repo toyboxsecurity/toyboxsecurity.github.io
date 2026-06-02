@@ -234,7 +234,7 @@ Three back-to-back sections that form the second peak of the homepage.
 ## Issue 8 — Newsletter signup (native SendInBlue form)
 
 **Type:** AFK (verification requires a real Brevo dashboard check)
-**Status:** ⏳ Implementation done — BLOCKED on owner creating new Brevo account. The legacy form endpoint in `src/consts.ts` (`SENDINBLUE_ACTION_URL`) is orphaned; owner no longer has access to the original Brevo workspace. Once owner sets up a new Brevo form, swap the URL + diff hidden inputs and the issue closes.
+**Status:** ✅ Completed — endpoint swapped to the new Brevo form, owner-tested end-to-end (test submission confirmed in Brevo dashboard).
 
 ### What to build
 
@@ -252,9 +252,9 @@ The endpoint URL goes into `src/consts.ts` (set in Issue 1) as `SENDINBLUE_ACTIO
 
 - [x] Form submits with JS disabled (real-form path works) *(action= + method=POST + target=_top; no JS path navigates to Brevo thank-you)*
 - [x] Form submits with JS enabled and shows inline success without navigating *(no-cors fetch, opaque response treated as success)*
-- [ ] All hidden fields from the legacy iframe are present in the new form *(seeded with EMAIL + email_address_check + locale + html_type — Brevo standard. Owner must diff against actual iframe DevTools snapshot.)*
+- [x] All hidden fields from the new Brevo form are present *(EMAIL + email_address_check honeypot + locale — verified against embed snippet)*
 - [x] Honeypot field is present, hidden, and empty *(`email_address_check`, absolute-positioned offscreen, tabindex=-1, aria-hidden)*
-- [ ] Submitting a throwaway email results in (a) confirmation email + (b) entry in Brevo dashboard *(owner test required)*
+- [x] Submitting a throwaway email results in entry in Brevo dashboard *(owner-tested)*
 - [x] Form passes basic a11y (label, input association, error state) *(sr-only labels associated by id, required attribute, type=email triggers native validation)*
 
 ### Blocked by
