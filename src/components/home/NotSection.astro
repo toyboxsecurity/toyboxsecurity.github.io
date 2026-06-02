@@ -1,0 +1,39 @@
+---
+/**
+ * "What it isn't" — disqualifying statements that filter wrong-fit
+ * clicks. Wrong-fit visitors who bounce off the Steam page hurt the
+ * algorithm; setting expectations up front protects the funnel.
+ *
+ * Owner can edit the list directly here — short list, no data file
+ * worth abstracting.
+ */
+import Section from '~/components/ui/Section.astro';
+
+const DISQUALIFIERS = [
+  'a battle royale',
+  'free-to-play',
+  'pay-to-win',
+  'a hero shooter',
+];
+---
+
+<Section spacing="default" variant="dark" class="border-t border-ink/10">
+  <div class="text-center max-w-3xl mx-auto">
+    <p class="text-xs uppercase tracking-widest text-accent mb-3">For the record</p>
+    <h2 class="font-display text-display-md uppercase leading-[0.95] mb-8">
+      ToyBox Security is&nbsp;<span class="text-accent">not</span>
+    </h2>
+    <ul class="flex flex-wrap justify-center gap-3">
+      {DISQUALIFIERS.map((label) => (
+        <li class="px-5 py-3 rounded-full bg-bg-light/[0.05] ring-1 ring-ink/15 text-base font-semibold uppercase tracking-wide text-ink/85">
+          <span class="text-accent mr-2">✗</span>{label}
+        </li>
+      ))}
+    </ul>
+    <p class="mt-8 text-ink-muted text-sm max-w-prose mx-auto">
+      It's a 4-player online comedy where the kids and the burglars are
+      equally outmatched and equally hilarious. That's it. No metas, no
+      season passes, no rotating cash shops.
+    </p>
+  </div>
+</Section>

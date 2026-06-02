@@ -13,22 +13,31 @@
 import { Image } from 'astro:assets';
 import Section from '~/components/ui/Section.astro';
 import WishlistButton from '~/components/ui/WishlistButton.astro';
-import heroBackground from '~/assets/backgrounds/trailer-promo-bg.png';
 import wordmark from '~/assets/logos/wordmark.png';
+import { PRESS_QUOTES } from '~/data/press-quotes';
+
+// The first entry in PRESS_QUOTES (if any) renders above the wishlist button.
+// When the array is empty, nothing renders — slot is ready, not visible.
+const featuredQuote = PRESS_QUOTES[0];
 ---
 
 <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
-  {/* Background art */}
-  <Image
-    src={heroBackground}
-    alt=""
-    widths={[768, 1280, 1920, 2560]}
-    sizes="100vw"
-    quality={80}
-    loading="eager"
-    fetchpriority="high"
+  {/* Background — looping cinematic moment from the trailer. The poster
+       JPG is a 28KB fallback that paints instantly while the video buffers
+       and persists if the browser refuses autoplay. */}
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    poster="/videos/hero-loop-poster.jpg"
     class="absolute inset-0 w-full h-full object-cover -z-10"
-  />
+    aria-hidden="true"
+  >
+    <source src="/videos/hero-loop.webm" type="video/webm" />
+    <source src="/videos/hero-loop.mp4" type="video/mp4" />
+  </video>
 
   {/* Gradient overlay — guarantees text contrast over any frame of the art */}
   <div
@@ -61,8 +70,26 @@ import wordmark from '~/assets/logos/wordmark.png';
       Set traps. Steal stuff.<br />Don't get caught.
     </p>
 
+    {/* Social-proof slot — renders only when there's a press quote to show. */}
+    {featuredQuote && (
+      <figure class="mt-10 max-w-xl mx-auto">
+        <blockquote class="text-sm md:text-base italic text-ink leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+          &ldquo;{featuredQuote.text}&rdquo;
+        </blockquote>
+        <figcaption class="mt-2 text-xs uppercase tracking-widest text-accent">
+          {featuredQuote.url ? (
+            <a href={featuredQuote.url} target="_blank" rel="noopener noreferrer" class="hover:underline">
+              — {featuredQuote.attribution}
+            </a>
+          ) : (
+            <span>— {featuredQuote.attribution}</span>
+          )}
+        </figcaption>
+      </figure>
+    )}
+
     {/* Primary CTA — Wishlist is the sole button; "Watch Trailer" is a quieter text link below. */}
-    <div class="mt-10 flex justify-center">
+    <div class={`${featuredQuote ? 'mt-6' : 'mt-10'} flex justify-center`}>
       <WishlistButton utmMedium="hero_cta" size="xl" />
     </div>
 
