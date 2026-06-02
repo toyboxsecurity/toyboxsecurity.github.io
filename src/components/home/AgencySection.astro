@@ -1,0 +1,51 @@
+---
+/**
+ * In-universe lore section — frames the player as an agent of a fictional
+ * kid-run security company. Sits between the trailer and the feature grid
+ * so it sets up the "you are an agent" framing before features describe
+ * field equipment.
+ */
+import Section from '~/components/ui/Section.astro';
+import { Image } from 'astro:assets';
+import icon from '~/assets/logos/icon.png';
+---
+
+<Section spacing="default" variant="light" class="border-t border-ink/10">
+  <div class="grid md:grid-cols-[1fr_2fr] gap-10 lg:gap-16 items-center">
+    {/* Agency seal */}
+    <div class="flex justify-center">
+      <div class="relative">
+        <Image
+          src={icon}
+          alt="ToyBox Security, Inc. emblem"
+          widths={[200, 400]}
+          sizes="240px"
+          class="w-48 md:w-60 h-auto"
+          loading="lazy"
+        />
+        <span
+          class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] uppercase tracking-[0.3em] bg-bg-dark text-ink px-3 py-1 rounded-full font-semibold"
+        >
+          Est. ToyBox Security, Inc.
+        </span>
+      </div>
+    </div>
+
+    {/* Lore copy */}
+    <div class="max-w-prose">
+      <p class="text-xs uppercase tracking-widest text-accent mb-3">The Agency</p>
+      <h2 class="font-display text-display-md uppercase leading-none">
+        A home security company,<br />run entirely by kids.
+      </h2>
+      <p class="text-lg leading-relaxed text-ink-dark/80 mt-6">
+        When homeowners go on vacation, they call ToyBox Security, Inc. One of
+        our agents — that's you — gets to the house lickety-split and rigs
+        traps from whatever's in the toy box, the kitchen drawer, and the
+        garage.
+      </p>
+      <p class="text-lg leading-relaxed text-ink-dark mt-4 italic font-semibold">
+        Then the burglars show up.
+      </p>
+    </div>
+  </div>
+</Section>

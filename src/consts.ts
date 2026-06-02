@@ -27,8 +27,10 @@ export const TRAILER_POSTER_URL = `https://i.ytimg.com/vi/${TRAILER_VIDEO_ID}/ma
 export const GA_MEASUREMENT_ID = 'G-4W57JFFTPL';
 
 // Newsletter (Brevo / SendInBlue serve endpoint)
-// NOTE: All hidden form fields from the legacy iframe still need to be copied verbatim
-// when we wire the NewsletterSignup component in Issue 8.
+// TODO(launch): the URL below is the legacy form whose Brevo account the owner
+// no longer has access to. Submissions go nowhere. Replace with the new form's
+// `sibforms.com/serve/...` URL once the new Brevo account is set up. Also diff
+// the hidden inputs against the new form (locale, html_type, list-ID, honeypot).
 export const SENDINBLUE_ACTION_URL =
   'https://6e743ba6.sibforms.com/serve/MUIEAFIMxk19z4MfjGwNa6OqHQeJbaCWhvfp6jlM6n_c0SlUaxJm9fj32TRKjexCSLcrxXBaJcsMK1xYVwVN6v--0P9qi8xgXxB7sJ-LFV1xh9E37IZkoJjDSi7lH9Cdy0IBOJnemtR2okvxnmEI379CJyFHkpjzaOha5e3HmRJ832mhJDm45oPbGZhm9gMXFTOGEqiUYFISbCli';
 

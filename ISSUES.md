@@ -234,7 +234,7 @@ Three back-to-back sections that form the second peak of the homepage.
 ## Issue 8 — Newsletter signup (native SendInBlue form)
 
 **Type:** AFK (verification requires a real Brevo dashboard check)
-**Status:** ⏳ Implementation done — needs owner verification: (1) test-submit a throwaway email → confirm Brevo dashboard records it; (2) diff hidden field names against legacy iframe in DevTools.
+**Status:** ⏳ Implementation done — BLOCKED on owner creating new Brevo account. The legacy form endpoint in `src/consts.ts` (`SENDINBLUE_ACTION_URL`) is orphaned; owner no longer has access to the original Brevo workspace. Once owner sets up a new Brevo form, swap the URL + diff hidden inputs and the issue closes.
 
 ### What to build
 

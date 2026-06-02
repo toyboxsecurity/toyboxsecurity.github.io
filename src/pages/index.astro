@@ -2,6 +2,7 @@
 import PageLayout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/home/Hero.astro';
 import TrailerSection from '~/components/home/TrailerSection.astro';
+import AgencySection from '~/components/home/AgencySection.astro';
 import FeatureGrid from '~/components/home/FeatureGrid.astro';
 import ScreenshotShowcase from '~/components/home/ScreenshotShowcase.astro';
 import WishlistCalloutBand from '~/components/home/WishlistCalloutBand.astro';
@@ -53,6 +54,7 @@ const jsonLd = JSON.stringify({
 <PageLayout transparentHeader jsonLd={jsonLd}>
   <Hero />
   <TrailerSection />
+  <AgencySection />
 
   <FeatureGrid />
   <ScreenshotShowcase />
