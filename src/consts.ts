@@ -34,13 +34,11 @@ export const SENDINBLUE_ACTION_URL =
   'https://e96c617a.sibforms.com/serve/MUIFAMTMoNvvsVBrLTeg4qV7Vlqi93a6L67h5SFTOH_ShN985fgwf06UmRGd9kQ7zKWZuUdE628Cbk3qV8s9QgvpIXuzPVbtOPfd8-k3UM2krMvEUKR7-niPzD2NG_enFGnUuNN5HBL8reiWbJiNeAQRVY7unBniTcM9YlbyCrS9j6o6DyQoYYn3YIyH2FRbmR23PiGJIwRf8SMvZQ==';
 
 // Social
-// NOTE on Discord: placeholder URL — owner sets up the server and updates this URL.
-// Until then, the icon links to the Discord landing page so visitors aren't sent to a 404.
 export const SOCIAL_LINKS = [
   {
     title: 'Discord',
     handle: 'Join our community',
-    url: 'https://discord.gg/', // TODO(launch): replace with the real invite URL once the ToyBox Security Discord server is created
+    url: 'https://discord.gg/MZSm3fk9gS',
   },
   {
     title: 'Twitter',
