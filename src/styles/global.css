@@ -10,18 +10,10 @@
 @import "tailwindcss";
 
 /* Self-hosted fonts — no Google Fonts CDN (third-party request, GDPR, latency).
-   KG Second Chances Solid is a commercial Kimberly Geswein font (purchased
-   commercial license). The .ttf source is gitignored; only the .woff2
-   served via @font-face is committed.
+   Luckiest Guy: Latin-only subset; single weight (400). Bold brush feel.
    Inter: default has @font-face for all subsets but unicode-range means a
    user only downloads the Latin woff2 (~30KB). */
-@font-face {
-  font-family: "KG Second Chances";
-  src: url("/fonts/KGSecondChancesSolid.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+@import "@fontsource/luckiest-guy/latin-400.css";
 @import "@fontsource-variable/inter";
 
 @theme {
@@ -38,10 +30,10 @@
   --color-ink-dark: #1A1410;         /* default text on light backgrounds */
 
   /* ---- typography ---- */
-  --font-display: "KG Second Chances", "Marker Felt", "Comic Sans MS", system-ui, sans-serif;
+  --font-display: "Luckiest Guy", "Impact", system-ui, sans-serif;
   --font-body: "Inter Variable", "Inter", system-ui, sans-serif;
 
-  /* Display font is hand-drawn marker — use at large sizes; not designed for body text. */
+  /* Display font is brush-painted, all caps. Use at large sizes; not designed for body text. */
   --text-display-sm: 2rem;
   --text-display-md: 3rem;
   --text-display-lg: clamp(2.5rem, 6vw + 1rem, 5.5rem);
@@ -69,9 +61,9 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 400; /* KG Second Chances ships single weight; carries its own marker weight. */
-    line-height: 1.05;
-    letter-spacing: 0;
+    font-weight: 400; /* Luckiest Guy ships single weight; already brush-bold. */
+    line-height: 1.1;
+    letter-spacing: 0.01em; /* Slight positive tracking — brush forms read better with a touch of breathing room. */
   }
 
   /* Respect reduced-motion. */
