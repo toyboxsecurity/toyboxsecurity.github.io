@@ -24,13 +24,13 @@ export const FEATURES: Feature[] = [
   {
     id: 'traps',
     title: 'T Is For Traps',
-    body: 'As a kid, craft traps from household objects and toys, then place them strategically around the house to outwit and defeat the robbers.',
+    body: 'As a kid, pick your trap loadout and place each one strategically around the house to outwit and defeat the robbers. Unlock new trap types the more you play.',
     videoSlug: 'blowtorch',
   },
   {
     id: 'robbers',
     title: 'Play as the Robbers',
-    body: "Case the house, choose your loadout, and steal everything that isn't nailed down — all while dodging the kids' traps before the cops show up.",
+    body: "Case the house, pick your loadout, and clear the place. Steal the loot, catch the kid, or get out before the sirens hit — whichever wins first.",
     videoSlug: 'robberGameplay',
   },
   {

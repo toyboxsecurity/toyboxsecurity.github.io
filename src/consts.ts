@@ -8,7 +8,7 @@ export const SITE_URL = 'https://www.toyboxsecurity.com';
 
 export const SITE_TITLE = 'ToyBox Security';
 export const SITE_DESCRIPTION =
-  'A multiplayer trap-em-up where kids defend the house and burglars try to steal everything that isn’t nailed down.';
+  'A multiplayer trap-em-up where kids defend the house with traps and burglars try to loot it AND catch the kid.';
 
 // Steam
 export const STEAM_APP_ID = 2121550;
