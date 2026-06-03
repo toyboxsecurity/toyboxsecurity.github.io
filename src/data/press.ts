@@ -38,7 +38,7 @@ export const HISTORY = `Development began in mid 2021 after solo developer thatc
 
 export const FEATURES_BULLETS: string[] = [
   '4-player online multiplayer — play as the kids or the robbers',
-  '50+ traps and trap combinations for defeating intruders',
+  'Configurable traps that combine and chain into countless ambush layouts',
   'As a kid, pick your trap loadout and place each one strategically around the house',
   'As a robber, loot the house and catch the kid before they catch you',
   'Steam integration: voice chat, achievements, cloud saves',
