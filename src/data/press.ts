@@ -40,7 +40,7 @@ export const FEATURES_BULLETS: string[] = [
   '4-player online multiplayer — play as the kids or the robbers',
   'Configurable traps that combine and chain into countless ambush layouts',
   'As a kid, pick your trap loadout and place each one strategically around the house',
-  'As a robber, loot the house and catch the kid before they catch you',
+  'As a robber, pick your loadout of heist tools — loot the house and catch the kid before they catch you',
   'Steam integration: voice chat, achievements, cloud saves',
   'Unlockables: characters, houses, and trap variants',
   'Interactive world: doorbells, light switches, breakers, ovens, sinks, ceiling fans',

@@ -30,7 +30,7 @@ export const FEATURES: Feature[] = [
   {
     id: 'robbers',
     title: 'Play as the Robbers',
-    body: "Case the house, pick your loadout, and clear the place. Steal the loot, catch the kid, or get out before the sirens hit — whichever wins first.",
+    body: "Pick a loadout of heist tools — crowbars, lockpicks, flashlights, whatever else fits in a duffel bag. Case the house, steal the loot, catch the kid, or get out before the sirens hit — whichever wins first.",
     videoSlug: 'robberGameplay',
   },
   {
