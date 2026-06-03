@@ -10,10 +10,18 @@
 @import "tailwindcss";
 
 /* Self-hosted fonts — no Google Fonts CDN (third-party request, GDPR, latency).
-   Bagel Fat One: Latin-only subpath (avoids the 186-file Korean subset).
+   KG Second Chances Solid is a commercial Kimberly Geswein font (purchased
+   commercial license). The .ttf source is gitignored; only the .woff2
+   served via @font-face is committed.
    Inter: default has @font-face for all subsets but unicode-range means a
    user only downloads the Latin woff2 (~30KB). */
-@import "@fontsource/bagel-fat-one/latin-400.css";
+@font-face {
+  font-family: "KG Second Chances";
+  src: url("/fonts/KGSecondChancesSolid.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 @import "@fontsource-variable/inter";
 
 @theme {
@@ -30,10 +38,10 @@
   --color-ink-dark: #1A1410;         /* default text on light backgrounds */
 
   /* ---- typography ---- */
-  --font-display: "Bagel Fat One", system-ui, sans-serif;
+  --font-display: "KG Second Chances", "Marker Felt", "Comic Sans MS", system-ui, sans-serif;
   --font-body: "Inter Variable", "Inter", system-ui, sans-serif;
 
-  /* Display font is heavy + decorative — use cautiously and at large sizes. */
+  /* Display font is hand-drawn marker — use at large sizes; not designed for body text. */
   --text-display-sm: 2rem;
   --text-display-md: 3rem;
   --text-display-lg: clamp(2.5rem, 6vw + 1rem, 5.5rem);
@@ -61,9 +69,9 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 400; /* Bagel Fat One only ships 400 — it's already heavy. */
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    font-weight: 400; /* KG Second Chances ships single weight; carries its own marker weight. */
+    line-height: 1.05;
+    letter-spacing: 0;
   }
 
   /* Respect reduced-motion. */
