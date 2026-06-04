@@ -4,11 +4,23 @@
  * On the homepage the Header sits over the hero — sections below have
  * top padding accounting for the header height.
  *
+ * Mobile layout decisions (per UX testing on iPhone 14):
+ *  - Icon-only logo (the "TOYBOX SECURITY" text wordmark wrapped to two
+ *    lines on narrow mobile widths and read amateurish at small sizes)
+ *  - Socials live in the main header row, not a second row — keeps the
+ *    header slim so the in-hero CTA + sticky-bottom CTA don't sandwich
+ *    the viewport
+ *  - No Wishlist pill in the mobile header — the in-hero button covers
+ *    above-fold; the sticky bottom bar covers post-scroll. Only one
+ *    Wishlist CTA visible at any time.
+ *
  * Mobile menu is a simple disclosure (vanilla JS, no framework).
  */
 import { SITE_TITLE } from '~/consts';
+import { Image } from 'astro:assets';
 import WishlistButton from '~/components/ui/WishlistButton.astro';
 import SocialLinks from '~/components/ui/SocialLinks.astro';
+import icon from '~/assets/logos/icon.png';
 
 interface Props {
   /** When true (homepage), the Header starts transparent and tints in on scroll. */
@@ -29,16 +41,29 @@ const NAV_LINKS = [
   data-transparent={transparent ? 'true' : 'false'}
   class="group/header fixed top-0 left-0 right-0 z-40 transition-colors duration-200 data-[scrolled=true]:bg-bg-dark/95 data-[scrolled=true]:backdrop-blur data-[transparent=false]:bg-bg-dark/95"
 >
-  <div class="container-page flex items-center justify-between gap-4 py-4">
+  <div class="container-page flex items-center justify-between gap-4 py-3">
+    {/* Icon-only logo. Real wordmark lives in the hero. */}
     <a
       href="/"
-      class="font-display text-xl tracking-wide text-ink hover:text-accent transition"
       aria-label={`${SITE_TITLE} — home`}
+      class="block flex-shrink-0 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
     >
-      {SITE_TITLE}
+      <Image
+        src={icon}
+        alt={SITE_TITLE}
+        widths={[80, 120]}
+        sizes="40px"
+        loading="eager"
+        class="h-10 w-auto"
+      />
     </a>
 
-    {/* Desktop nav */}
+    {/* Mobile: socials inline with the logo + hamburger */}
+    <div class="md:hidden">
+      <SocialLinks size={22} class="!gap-5" />
+    </div>
+
+    {/* Desktop nav (hidden on mobile) */}
     <nav class="hidden md:flex items-center gap-6 lg:gap-8" aria-label="Primary">
       {NAV_LINKS.map((link) => (
         <a
@@ -52,38 +77,22 @@ const NAV_LINKS = [
       <WishlistButton utmMedium="header" size="sm" />
     </nav>
 
-    {/* Mobile right cluster: small Wishlist pill (conditional) + hamburger.
-        Pill hides over the transparent homepage hero so it doesn't double up
-        with the big in-hero Wishlist button; fades in once the header tints. */}
-    <div class="md:hidden flex items-center gap-2">
-      <div
-        class="opacity-0 pointer-events-none transition-opacity duration-200 group-data-[scrolled=true]/header:opacity-100 group-data-[scrolled=true]/header:pointer-events-auto group-data-[transparent=false]/header:opacity-100 group-data-[transparent=false]/header:pointer-events-auto"
-      >
-        <WishlistButton utmMedium="mobile_header" size="sm" label="Wishlist" />
-      </div>
-
-      <button
-        type="button"
-        id="mobile-menu-toggle"
-        aria-controls="mobile-menu"
-        aria-expanded="false"
-        class="inline-flex items-center justify-center w-10 h-10 rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-      >
-        <span class="sr-only">Toggle menu</span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  {/* Mobile-only secondary row — socials always visible so the "follow" path
-       doesn't hide behind the hamburger. Low visual weight (small icons,
-       muted color) so it doesn't compete with the hero CTA on the homepage. */}
-  <div class="md:hidden border-t border-ink/10 px-5 py-2 flex justify-center">
-    <SocialLinks size={20} class="!gap-6" />
+    {/* Mobile hamburger only — no Wishlist pill (sticky bottom bar covers
+        post-scroll; in-hero button covers above-fold). */}
+    <button
+      type="button"
+      id="mobile-menu-toggle"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+    >
+      <span class="sr-only">Toggle menu</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
   </div>
 
   {/* Mobile menu panel */}
