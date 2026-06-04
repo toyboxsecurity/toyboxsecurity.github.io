@@ -1,10 +1,16 @@
 ---
 /**
  * Three most recent published news posts, rendered on the homepage.
- * Drafts are excluded unconditionally here (homepage is public-facing).
+ * Drafts are excluded unconditionally (homepage is public-facing).
+ *
+ * Section hides entirely when there are fewer than 2 published posts —
+ * a single card in a 3-col grid reads "this site is empty" and hurts
+ * the impression more than the news beat helps.
  */
 import { getCollection } from 'astro:content';
 import Section from '~/components/ui/Section.astro';
+
+const MIN_POSTS_TO_SHOW = 2;
 
 const posts = (await getCollection('news', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -14,7 +20,7 @@ const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-{posts.length > 0 && (
+{posts.length >= MIN_POSTS_TO_SHOW && (
   <Section spacing="default" variant="dark" class="border-t border-ink/10">
     <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
       <div>

@@ -22,7 +22,7 @@ const ICONS: Record<string, string> = {
 };
 ---
 
-<ul class={`flex items-center gap-4 ${extraClass}`.trim()}>
+<ul class={`flex items-center gap-1 ${extraClass}`.trim()}>
   {SOCIAL_LINKS.map((social) => (
     <li>
       <a
@@ -30,7 +30,7 @@ const ICONS: Record<string, string> = {
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${social.title} (${social.handle})`}
-        class="inline-flex items-center justify-center text-ink/70 transition hover:text-accent focus-visible:text-accent focus-visible:outline-none"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 rounded text-ink/70 transition hover:text-accent focus-visible:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
