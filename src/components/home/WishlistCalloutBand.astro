@@ -1,0 +1,22 @@
+---
+/**
+ * Full-width accent-colored band — the second visual peak of the homepage.
+ * Lives between the screenshot showcase and the Steam widget.
+ */
+import Section from '~/components/ui/Section.astro';
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+---
+
+<Section spacing="generous" variant="accent" class="text-center">
+  <p class="text-sm uppercase tracking-[0.3em] font-semibold mb-4">Coming to Steam</p>
+  <h2 class="font-display text-display-lg uppercase leading-[0.95]">
+    Don't miss<br />the launch.
+  </h2>
+  <p class="mt-6 text-lg max-w-xl mx-auto leading-relaxed">
+    Click below to add ToyBox Security to your Steam wishlist — you'll get an
+    email the moment it goes live.
+  </p>
+  <div class="mt-10 flex justify-center">
+    <WishlistButton utmMedium="callout_band" size="xl" />
+  </div>
+</Section>

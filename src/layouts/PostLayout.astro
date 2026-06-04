@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import PageLayout from '~/layouts/PageLayout.astro';
+import Section from '~/components/ui/Section.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'news'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, pubDate, heroImage } = entry.data;
+
+const dateLabel = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<PageLayout
+  title={title}
+  description={description}
+>
+  <Section spacing="default" width="prose" class="pt-32">
+    <article>
+      <header class="mb-10">
+        <p class="text-xs uppercase tracking-widest text-accent mb-3">
+          <time datetime={pubDate.toISOString()}>{dateLabel}</time>
+        </p>
+        <h1 class="font-display text-display-lg uppercase leading-[0.95]">{title}</h1>
+        <p class="text-lg text-ink-muted mt-6">{description}</p>
+      </header>
+
+      {heroImage && (
+        <Image
+          src={heroImage}
+          alt=""
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 768px) 720px, 100vw"
+          class="rounded-xl my-8 w-full h-auto"
+          loading="lazy"
+        />
+      )}
+
+      <div class="prose-content">
+        <slot />
+      </div>
+    </article>
+
+    <div class="mt-16 pt-8 border-t border-ink/10">
+      <a href="/news" class="text-accent hover:text-accent-hover transition uppercase tracking-widest text-sm">
+        ← Back to all news
+      </a>
+    </div>
+  </Section>
+</PageLayout>
+
+<style>
+  /* Article body typography — kept here so it doesn't bleed into the rest of the site. */
+  .prose-content :global(h2) {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 1.75rem;
+    line-height: 1.1;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-content :global(h3) {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-content :global(p) {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    color: var(--color-ink);
+  }
+  .prose-content :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-content :global(a:hover) {
+    color: var(--color-accent-hover);
+  }
+  .prose-content :global(ul),
+  .prose-content :global(ol) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .prose-content :global(ul) { list-style: disc; }
+  .prose-content :global(ol) { list-style: decimal; }
+  .prose-content :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+  .prose-content :global(blockquote) {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+  .prose-content :global(code) {
+    background: rgba(255, 92, 57, 0.12);
+    color: var(--color-accent);
+    padding: 0.15em 0.35em;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+  }
+  .prose-content :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--color-ink);
+    opacity: 0.15;
+    margin: 2.5rem 0;
+  }
+</style>

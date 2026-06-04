@@ -1,0 +1,61 @@
+---
+/**
+ * Reusable button — link OR button element depending on whether href is set.
+ * Variants: primary (accent orange), secondary (outline), ghost (text only).
+ * The WishlistButton wraps this with the locked Steam-green variant.
+ */
+type Variant = 'primary' | 'secondary' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props {
+  href?: string;
+  variant?: Variant;
+  size?: Size;
+  /** Render as external link (target=_blank, rel=noopener). */
+  external?: boolean;
+  /** Extra Tailwind classes appended. */
+  class?: string;
+  type?: 'button' | 'submit' | 'reset';
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  class: extraClass = '',
+  type = 'button',
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-lg font-semibold tracking-wide uppercase transition-transform duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-dark hover:-translate-y-0.5 active:translate-y-0';
+
+const variants: Record<Variant, string> = {
+  primary:
+    'bg-accent text-bg-dark shadow-lg shadow-accent/20 hover:bg-accent-hover focus-visible:ring-accent',
+  secondary:
+    'border-2 border-ink/80 text-ink bg-transparent hover:bg-ink/10 focus-visible:ring-ink',
+  ghost:
+    'text-ink hover:text-accent focus-visible:ring-accent',
+};
+
+const sizes: Record<Size, string> = {
+  sm: 'text-sm px-3 py-1.5',
+  md: 'text-base px-5 py-2.5',
+  lg: 'text-lg px-7 py-3.5',
+};
+
+const classes = `${base} ${variants[variant]} ${sizes[size]} ${extraClass}`.trim();
+
+const externalProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{href ? (
+  <a href={href} class={classes} {...externalProps}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class={classes}>
+    <slot />
+  </button>
+)}

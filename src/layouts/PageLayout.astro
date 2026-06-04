@@ -1,0 +1,44 @@
+---
+/**
+ * Standard page chassis: BaseHead + Header + main + Footer.
+ * Use for every "real" route (homepage, /press, /news, /news/[slug]).
+ *
+ * `transparentHeader` makes the header start over the hero (homepage)
+ * and tint in on scroll.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Header from '~/components/layout/Header.astro';
+import Footer from '~/components/layout/Footer.astro';
+import StickyWishlistBar from '~/components/layout/StickyWishlistBar.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImagePath?: string;
+  jsonLd?: string;
+  /** True on pages with a full-bleed hero (homepage). */
+  transparentHeader?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImagePath,
+  jsonLd,
+  transparentHeader = false,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImagePath={ogImagePath}
+  jsonLd={jsonLd}
+>
+  <Header transparent={transparentHeader} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+  <StickyWishlistBar />
+</BaseLayout>

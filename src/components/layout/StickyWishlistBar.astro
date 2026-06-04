@@ -1,0 +1,70 @@
+---
+/**
+ * Mobile-only sticky bottom bar that surfaces the wishlist CTA after the
+ * user has scrolled past the hero. On desktop the Header already serves
+ * this role (small WishlistButton in the right side of the nav once the
+ * Header tints in), so this component is `md:hidden`.
+ *
+ * Activation: an IntersectionObserver watches the `[data-hero-sentinel]`
+ * inside the Hero component. Once the sentinel leaves the viewport, we
+ * set `data-state="visible"` on this element.
+ */
+import WishlistButton from '~/components/ui/WishlistButton.astro';
+---
+
+<div
+  id="sticky-wishlist-bar"
+  data-state="hidden"
+  class="md:hidden fixed bottom-0 left-0 right-0 z-30 transform-gpu translate-y-full transition-transform duration-200 ease-out data-[state=visible]:translate-y-0 bg-bg-dark/95 backdrop-blur border-t border-ink/10 px-4 pt-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+>
+  <p class="text-[10px] uppercase tracking-[0.25em] text-ink-muted text-center mb-1.5">
+    Coming soon to Steam
+  </p>
+  <WishlistButton utmMedium="sticky_bar_mobile" size="lg" fullWidth />
+</div>
+
+<script>
+  const bar = document.getElementById('sticky-wishlist-bar');
+  const sentinel = document.querySelector<HTMLElement>('[data-hero-sentinel]');
+
+  if (bar && sentinel) {
+    /*
+     * Two-signal gate for the homepage:
+     *   1) The IntersectionObserver on the hero sentinel.
+     *   2) A scroll-position FLOOR — if the user is within 100px of the
+     *      top of the page, the bar is force-hidden regardless of what
+     *      the IO reports. This is the defensive belt-and-suspenders
+     *      because iOS Safari's IO + svh + URL-bar interaction can fire
+     *      isIntersecting=false on first paint when the hero content is
+     *      close to filling the viewport.
+     */
+    let sentinelIntersecting = true;
+
+    const update = () => {
+      if (window.scrollY < 100) {
+        bar.dataset.state = 'hidden';
+        return;
+      }
+      bar.dataset.state = sentinelIntersecting ? 'hidden' : 'visible';
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        sentinelIntersecting = entries[0].isIntersecting;
+        update();
+      },
+      // 200px bottom rootMargin extends the "considered in view" area
+      // below the actual viewport — gives the IO extra forgiveness for
+      // iOS edge cases where the sentinel sits very near the viewport
+      // boundary at initial paint.
+      { rootMargin: '0px 0px 200px 0px', threshold: 0 }
+    );
+    io.observe(sentinel);
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  } else if (bar) {
+    // No hero on this page (404, /press, /news, etc.) → show by default.
+    bar.dataset.state = 'visible';
+  }
+</script>

@@ -1,0 +1,53 @@
+---
+/**
+ * Three most recent published news posts, rendered on the homepage.
+ * Drafts are excluded unconditionally (homepage is public-facing).
+ *
+ * Section hides entirely when there are fewer than 2 published posts —
+ * a single card in a 3-col grid reads "this site is empty" and hurts
+ * the impression more than the news beat helps.
+ */
+import { getCollection } from 'astro:content';
+import Section from '~/components/ui/Section.astro';
+
+const MIN_POSTS_TO_SHOW = 2;
+
+const posts = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+{posts.length >= MIN_POSTS_TO_SHOW && (
+  <Section spacing="default" variant="dark" class="border-t border-ink/10">
+    <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-accent mb-3">Devblog</p>
+        <h2 class="font-display text-display-md uppercase leading-none">Latest news</h2>
+      </div>
+      <a href="/news" class="text-sm uppercase tracking-widest text-ink/80 hover:text-accent transition">
+        See all updates →
+      </a>
+    </div>
+
+    <ul class="grid md:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <li>
+          <a href={`/news/${post.slug}`} class="group block bg-bg-light/[0.04] ring-1 ring-ink/10 rounded-xl p-6 h-full hover:bg-bg-light/[0.08] hover:ring-accent transition">
+            <p class="text-xs uppercase tracking-widest text-ink-muted mb-3">
+              <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+            </p>
+            <h3 class="font-display text-xl uppercase leading-tight group-hover:text-accent transition">
+              {post.data.title}
+            </h3>
+            <p class="text-sm text-ink-muted mt-3 leading-relaxed line-clamp-3">
+              {post.data.description}
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </Section>
+)}

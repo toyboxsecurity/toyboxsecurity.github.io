@@ -1,1 +1,22 @@
+# Jekyll (legacy — removed in Issue 3)
 _site
+.jekyll-cache
+
+# Node / Astro
+node_modules
+dist
+.astro
+
+# Commercial font sources — keep .ttf locally for re-generation, ship .woff2 only.
+src/assets/fonts/*.ttf
+src/assets/fonts/*.otf
+
+# Env / editor
+.env
+.env.production
+.DS_Store
+*.log
+npm-debug.log*
+
+# OS
+Thumbs.db

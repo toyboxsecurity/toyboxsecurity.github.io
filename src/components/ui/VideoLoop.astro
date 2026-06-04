@@ -1,0 +1,74 @@
+---
+/**
+ * Silent looping video primitive.
+ *
+ * Renders <video autoplay muted loop playsinline preload="metadata"> with
+ * both .mp4 and .webm sources. iOS Safari needs all three of muted /
+ * autoplay / playsinline together or it silently refuses to autoplay.
+ *
+ * Lazy-load: an IntersectionObserver swaps `data-src` → `src` on the
+ * <source> elements when the wrapper enters viewport. Astro doesn't
+ * lazy-load <video> natively, so we do it by hand.
+ */
+interface Props {
+  /** Basename in public/videos/ — produces `${slug}.mp4` and `${slug}.webm`. */
+  slug: string;
+  /** Aspect ratio CSS value (default 16/9). */
+  aspect?: string;
+  /** Optional poster (path under /public). */
+  poster?: string;
+  class?: string;
+}
+
+const { slug, aspect = '16 / 9', poster, class: extraClass = '' } = Astro.props;
+const mp4 = `/videos/${slug}.mp4`;
+const webm = `/videos/${slug}.webm`;
+---
+
+<div
+  class={`video-loop relative w-full overflow-hidden bg-black ${extraClass}`.trim()}
+  style={`aspect-ratio: ${aspect};`}
+>
+  <video
+    class="absolute inset-0 w-full h-full object-cover"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="none"
+    poster={poster}
+    aria-hidden="true"
+  >
+    {/* Sources start with no src; the script sets them on viewport entry. */}
+    <source data-src={webm} type="video/webm" />
+    <source data-src={mp4} type="video/mp4" />
+  </video>
+</div>
+
+<script>
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const wrapper = entry.target as HTMLElement;
+        const video = wrapper.querySelector('video');
+        if (!video) return;
+
+        // Set src on each <source>, then tell <video> to reload.
+        const sources = video.querySelectorAll<HTMLSourceElement>('source[data-src]');
+        sources.forEach((s) => {
+          s.src = s.dataset.src ?? '';
+          s.removeAttribute('data-src');
+        });
+        video.load();
+        const playPromise = video.play();
+        if (playPromise) playPromise.catch(() => { /* autoplay refused — that's fine, user can interact */ });
+
+        io.unobserve(wrapper);
+      });
+    },
+    { rootMargin: '200px 0px', threshold: 0 }
+  );
+
+  document.querySelectorAll<HTMLElement>('.video-loop').forEach((el) => io.observe(el));
+</script>

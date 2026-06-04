@@ -1,0 +1,65 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/home/Hero.astro';
+import TrailerSection from '~/components/home/TrailerSection.astro';
+import AgencySection from '~/components/home/AgencySection.astro';
+import FeatureGrid from '~/components/home/FeatureGrid.astro';
+import ScreenshotShowcase from '~/components/home/ScreenshotShowcase.astro';
+import WishlistCalloutBand from '~/components/home/WishlistCalloutBand.astro';
+import SteamWidget from '~/components/home/SteamWidget.astro';
+import NewsletterSignup from '~/components/home/NewsletterSignup.astro';
+import LatestNewsTeaser from '~/components/home/LatestNewsTeaser.astro';
+import {
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  SITE_URL,
+  STEAM_STORE_URL,
+  STUDIO_NAME,
+  TRAILER_POSTER_URL,
+  TRAILER_YOUTUBE_URL,
+} from '~/consts';
+
+// VideoGame JSON-LD — helps Google's Game knowledge panel + general SEO.
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  url: SITE_URL,
+  image: `${SITE_URL}/og/default-og.jpg`,
+  applicationCategory: 'Game',
+  operatingSystem: 'Windows',
+  gamePlatform: ['PC'],
+  genre: ['Asymmetric Multiplayer', 'Multiplayer', 'PvP', 'Comedy', 'Action', 'Indie'],
+  publisher: { '@type': 'Organization', name: STUDIO_NAME },
+  author: { '@type': 'Organization', name: STUDIO_NAME },
+  offers: {
+    '@type': 'Offer',
+    url: STEAM_STORE_URL,
+    availability: 'https://schema.org/PreOrder',
+    priceCurrency: 'USD',
+  },
+  trailer: {
+    '@type': 'VideoObject',
+    name: `${SITE_TITLE} — Announcement Trailer`,
+    description: SITE_DESCRIPTION,
+    thumbnailUrl: TRAILER_POSTER_URL,
+    uploadDate: '2022-09-01',
+    contentUrl: TRAILER_YOUTUBE_URL,
+    embedUrl: TRAILER_YOUTUBE_URL.replace('watch?v=', 'embed/'),
+  },
+});
+---
+
+<PageLayout transparentHeader jsonLd={jsonLd}>
+  <Hero />
+  <TrailerSection />
+  <AgencySection />
+
+  <FeatureGrid />
+  <ScreenshotShowcase />
+  <WishlistCalloutBand />
+  <SteamWidget />
+  <NewsletterSignup />
+  <LatestNewsTeaser />
+</PageLayout>

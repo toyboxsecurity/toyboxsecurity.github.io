@@ -1,0 +1,20 @@
+---
+import VideoLoop from '~/components/ui/VideoLoop.astro';
+import type { Feature } from '~/data/features';
+
+interface Props {
+  feature: Feature;
+}
+
+const { feature } = Astro.props;
+---
+
+<article class="group rounded-2xl bg-bg-light/[0.04] ring-1 ring-ink/10 overflow-hidden flex flex-col transition hover:ring-accent hover:bg-bg-light/[0.06]">
+  <VideoLoop slug={feature.videoSlug} aspect="16 / 10" />
+  <div class="p-6 flex flex-col flex-1">
+    <h3 class="font-display text-xl uppercase leading-tight">
+      <Fragment set:html={feature.title} />
+    </h3>
+    <p class="text-ink-muted mt-3 leading-relaxed text-sm">{feature.body}</p>
+  </div>
+</article>

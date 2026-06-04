@@ -1,0 +1,115 @@
+---
+/**
+ * Newsletter signup — posts directly to Brevo's serve endpoint.
+ * Form fields verified against the current Brevo embed snippet.
+ *
+ * Submission flow:
+ *  - Baseline: real HTML form POSTs to Brevo; browser navigates to Brevo's
+ *    default thank-you page on success. Works with JS disabled.
+ *  - Enhanced: JS intercepts, does a no-cors fetch (Brevo returns a 302 we
+ *    can't read, so we optimistically treat resolution as success), shows
+ *    inline success message. Falls back to real-form submit if fetch fails.
+ */
+import Section from '~/components/ui/Section.astro';
+import { SENDINBLUE_ACTION_URL } from '~/consts';
+---
+
+<Section spacing="default" class="border-t border-ink/10">
+  <div class="max-w-xl mx-auto text-center">
+    <p class="text-xs uppercase tracking-widest text-accent mb-3">Get updates</p>
+    <h2 class="font-display text-display-md uppercase">Email me at launch</h2>
+    <p class="text-ink-muted mt-4">
+      Get an email when the game goes live on Steam — plus the occasional
+      devblog or behind-the-scenes update along the way.
+    </p>
+
+    <form
+      id="newsletter-form"
+      action={SENDINBLUE_ACTION_URL}
+      method="POST"
+      target="_top"
+      class="mt-8 flex flex-col sm:flex-row gap-3"
+      novalidate
+    >
+      {/* Email input */}
+      <label class="sr-only" for="newsletter-email">Email address</label>
+      <input
+        id="newsletter-email"
+        type="email"
+        name="EMAIL"
+        required
+        autocomplete="email"
+        placeholder="you@somewhere.com"
+        class="flex-1 rounded-lg bg-bg-light/[0.04] ring-1 ring-ink/15 px-4 py-3 text-ink placeholder:text-ink-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      />
+
+      {/* Honeypot — must remain empty. Hidden visually but present in DOM. */}
+      <label class="sr-only" for="newsletter-trap">Leave this field empty</label>
+      <input
+        id="newsletter-trap"
+        type="text"
+        name="email_address_check"
+        value=""
+        tabindex="-1"
+        autocomplete="off"
+        style="position:absolute;left:-9999px;opacity:0;pointer-events:none;"
+        aria-hidden="true"
+      />
+
+      {/* Brevo hidden fields — matches the form's embed snippet exactly. */}
+      <input type="hidden" name="locale" value="en" />
+
+      <button
+        type="submit"
+        class="rounded-lg bg-accent text-bg-dark font-semibold uppercase tracking-wide px-6 py-3 transition-transform duration-150 hover:-translate-y-0.5 hover:bg-accent-hover active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-dark"
+      >
+        Notify me
+      </button>
+    </form>
+
+    {/* Inline status (success or failure). Hidden until JS replaces the form. */}
+    <p id="newsletter-status" class="mt-4 text-sm" hidden></p>
+
+    <p class="text-xs text-ink-muted/80 mt-4">
+      We use Brevo to handle subscriptions. By signing up you agree to receive
+      occasional updates about ToyBox Security; unsubscribe any time.
+    </p>
+  </div>
+</Section>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const status = document.getElementById('newsletter-status') as HTMLParagraphElement | null;
+
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      // Honor the no-JS path if anything's missing.
+      if (!form.action || !form.method) return;
+
+      e.preventDefault();
+
+      const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        // no-cors: Brevo returns a 302 → opaque response. We can't read it,
+        // but the network call goes through and the subscription is recorded.
+        await fetch(form.action, {
+          method: 'POST',
+          mode: 'no-cors',
+          credentials: 'omit',
+          body: new FormData(form),
+        });
+
+        form.hidden = true;
+        status.textContent = "Thanks — you're on the list. Talk soon.";
+        status.className = 'mt-4 text-sm text-secondary font-semibold';
+        status.hidden = false;
+      } catch {
+        // If fetch fails entirely, fall back to the real form post.
+        if (submitBtn) submitBtn.disabled = false;
+        form.submit();
+      }
+    });
+  }
+</script>

@@ -1,8 +1,0 @@
----
-layout: default
-img: blowtorch.gif
-category: Services
-title: T Is For Traps
-description: |
----
-  When playing as a kid you must find and craft traps out of household objects (including toys) and strategically place them around the house in order to outwit and defeat the robbers. 
