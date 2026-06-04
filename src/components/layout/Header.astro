@@ -27,7 +27,7 @@ const NAV_LINKS = [
 
 <header
   data-transparent={transparent ? 'true' : 'false'}
-  class="fixed top-0 left-0 right-0 z-40 transition-colors duration-200 data-[scrolled=true]:bg-bg-dark/95 data-[scrolled=true]:backdrop-blur data-[transparent=false]:bg-bg-dark/95"
+  class="group/header fixed top-0 left-0 right-0 z-40 transition-colors duration-200 data-[scrolled=true]:bg-bg-dark/95 data-[scrolled=true]:backdrop-blur data-[transparent=false]:bg-bg-dark/95"
 >
   <div class="container-page flex items-center justify-between gap-4 py-4">
     <a
@@ -52,21 +52,31 @@ const NAV_LINKS = [
       <WishlistButton utmMedium="header" size="sm" />
     </nav>
 
-    {/* Mobile menu button */}
-    <button
-      type="button"
-      id="mobile-menu-toggle"
-      aria-controls="mobile-menu"
-      aria-expanded="false"
-      class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-    >
-      <span class="sr-only">Toggle menu</span>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
-    </button>
+    {/* Mobile right cluster: small Wishlist pill (conditional) + hamburger.
+        Pill hides over the transparent homepage hero so it doesn't double up
+        with the big in-hero Wishlist button; fades in once the header tints. */}
+    <div class="md:hidden flex items-center gap-2">
+      <div
+        class="opacity-0 pointer-events-none transition-opacity duration-200 group-data-[scrolled=true]/header:opacity-100 group-data-[scrolled=true]/header:pointer-events-auto group-data-[transparent=false]/header:opacity-100 group-data-[transparent=false]/header:pointer-events-auto"
+      >
+        <WishlistButton utmMedium="mobile_header" size="sm" label="Wishlist" />
+      </div>
+
+      <button
+        type="button"
+        id="mobile-menu-toggle"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        class="inline-flex items-center justify-center w-10 h-10 rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      >
+        <span class="sr-only">Toggle menu</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
   </div>
 
   {/* Mobile menu panel */}
