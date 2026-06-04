@@ -79,6 +79,13 @@ const NAV_LINKS = [
     </div>
   </div>
 
+  {/* Mobile-only secondary row — socials always visible so the "follow" path
+       doesn't hide behind the hamburger. Low visual weight (small icons,
+       muted color) so it doesn't compete with the hero CTA on the homepage. */}
+  <div class="md:hidden border-t border-ink/10 px-5 py-2 flex justify-center">
+    <SocialLinks size={20} class="!gap-6" />
+  </div>
+
   {/* Mobile menu panel */}
   <div
     id="mobile-menu"
@@ -94,9 +101,6 @@ const NAV_LINKS = [
           {link.label}
         </a>
       ))}
-      <div class="pt-4 pb-2 border-t border-ink/10 mt-2">
-        <SocialLinks size={22} />
-      </div>
       <div class="pt-3">
         <WishlistButton utmMedium="mobile_menu" size="md" fullWidth />
       </div>

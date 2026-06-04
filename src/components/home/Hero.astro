@@ -21,7 +21,15 @@ import { PRESS_QUOTES } from '~/data/press-quotes';
 const featuredQuote = PRESS_QUOTES[0];
 ---
 
-<header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+<header class="relative min-h-svh flex items-center justify-center overflow-hidden">
+  {/*
+    NOTE: min-h-svh (small viewport height), not min-h-screen / 100vh.
+    iOS Safari's 100vh equals the LARGEST viewport (URL bar hidden), so
+    on initial load with URL bar visible, a 100vh element is taller than
+    the actually-visible area — the sentinel at its bottom falls below
+    the viewport and the sticky CTA bar shows over the hero.
+    svh is the smallest viewport (URL bar shown), so it always fits.
+  */}
   {/* Background — looping cinematic moment from the trailer. The poster
        JPG is a 28KB fallback that paints instantly while the video buffers
        and persists if the browser refuses autoplay. */}
@@ -115,8 +123,10 @@ const featuredQuote = PRESS_QUOTES[0];
     </svg>
   </a>
 
-  {/* IntersectionObserver sentinel — when this leaves the viewport, the sticky CTA bar tints in */}
-  <div data-hero-sentinel class="absolute bottom-0 left-0 right-0 h-1 pointer-events-none" aria-hidden="true" />
+  {/* IntersectionObserver sentinel — when this leaves the viewport, the sticky CTA bar tints in.
+       Inset 16px up from the bottom so we have a buffer for any iOS Safari
+       URL-bar / dvh edge cases. */}
+  <div data-hero-sentinel class="absolute bottom-16 left-0 right-0 h-1 pointer-events-none" aria-hidden="true" />
 </header>
 
 <style>
