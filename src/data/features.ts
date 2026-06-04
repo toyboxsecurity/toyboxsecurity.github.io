@@ -41,8 +41,8 @@ export const FEATURES: Feature[] = [
   },
   {
     id: 'multiplayer',
-    title: '4-Player Online Co-op',
-    body: 'Team up online with up to 3 friends. Coordinate trap layouts as the kids, or split the loot as the burglars — voice chat through Steam built in.',
+    title: 'Online Asymmetric Multiplayer',
+    body: 'Up to 4 players, two opposing roles. Coordinate trap layouts with your fellow kids, or split the loot with your fellow burglars — Steam voice chat built in.',
     videoSlug: 'multiplayer',
   },
   {
