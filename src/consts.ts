@@ -38,7 +38,7 @@ export const SOCIAL_LINKS = [
   {
     title: 'Discord',
     handle: 'Join our community',
-    url: 'https://discord.gg/MZSm3fk9gS',
+    url: 'https://discord.gg/Px5GgZFv6S',
   },
   {
     title: 'Twitter',
