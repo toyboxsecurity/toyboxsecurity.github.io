@@ -42,8 +42,8 @@ export const SOCIAL_LINKS = [
   },
   {
     title: 'Twitter',
-    handle: '@ToyBoxSecurity',
-    url: 'https://twitter.com/ToyBoxSecurity',
+    handle: '@thatcozydev',
+    url: 'https://x.com/thatcozydev',
   },
   {
     title: 'TikTok',
