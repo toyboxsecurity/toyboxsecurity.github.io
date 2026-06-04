@@ -28,15 +28,41 @@ import WishlistButton from '~/components/ui/WishlistButton.astro';
   const sentinel = document.querySelector<HTMLElement>('[data-hero-sentinel]');
 
   if (bar && sentinel) {
+    /*
+     * Two-signal gate for the homepage:
+     *   1) The IntersectionObserver on the hero sentinel.
+     *   2) A scroll-position FLOOR — if the user is within 100px of the
+     *      top of the page, the bar is force-hidden regardless of what
+     *      the IO reports. This is the defensive belt-and-suspenders
+     *      because iOS Safari's IO + svh + URL-bar interaction can fire
+     *      isIntersecting=false on first paint when the hero content is
+     *      close to filling the viewport.
+     */
+    let sentinelIntersecting = true;
+
+    const update = () => {
+      if (window.scrollY < 100) {
+        bar.dataset.state = 'hidden';
+        return;
+      }
+      bar.dataset.state = sentinelIntersecting ? 'hidden' : 'visible';
+    };
+
     const io = new IntersectionObserver(
       (entries) => {
-        // entries[0].isIntersecting === true means the sentinel (and therefore
-        // the bottom of the hero) is still in view → hide the bar.
-        bar.dataset.state = entries[0].isIntersecting ? 'hidden' : 'visible';
+        sentinelIntersecting = entries[0].isIntersecting;
+        update();
       },
-      { rootMargin: '0px', threshold: 0 }
+      // 200px bottom rootMargin extends the "considered in view" area
+      // below the actual viewport — gives the IO extra forgiveness for
+      // iOS edge cases where the sentinel sits very near the viewport
+      // boundary at initial paint.
+      { rootMargin: '0px 0px 200px 0px', threshold: 0 }
     );
     io.observe(sentinel);
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
   } else if (bar) {
     // No hero on this page (404, /press, /news, etc.) → show by default.
     bar.dataset.state = 'visible';
