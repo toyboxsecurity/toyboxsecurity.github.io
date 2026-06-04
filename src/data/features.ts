@@ -41,8 +41,8 @@ export const FEATURES: Feature[] = [
   },
   {
     id: 'multiplayer',
-    title: 'Online Asymmetric Multiplayer',
-    body: 'Up to 4 players, two opposing roles. Coordinate trap layouts with your fellow kids, or split the loot with your fellow burglars — Steam voice chat built in.',
+    title: 'Multiplayer Made for Friend Groups',
+    body: '1–4 players online. Grab your friends, pick sides, and let the chaos unfold — coordinate trap layouts with your fellow kids, or split the loot with your fellow burglars. Steam voice chat built in.',
     videoSlug: 'multiplayer',
   },
   {

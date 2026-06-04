@@ -7,7 +7,7 @@
  * JSON-LD). Defaults pull from src/consts.ts.
  */
 import '~/styles/global.css';
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL, GA_MEASUREMENT_ID } from '~/consts';
+import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION, SITE_URL, GA_MEASUREMENT_ID } from '~/consts';
 
 interface Props {
   title?: string;
@@ -28,7 +28,9 @@ const {
   jsonLd,
 } = Astro.props;
 
-const fullTitle = title ? `${title} — ${SITE_TITLE}` : SITE_TITLE;
+// Inner pages: "Press kit — ToyBox Security". Homepage (no title): "ToyBox Security | An Asymmetric Multiplayer Comedy"
+// — mirrors the DBD / SoT / FFXIV pattern of brand-pipe-genre in Google search result snippets.
+const fullTitle = title ? `${title} — ${SITE_TITLE}` : `${SITE_TITLE} | ${SITE_TAGLINE}`;
 const canonical = new URL(pathname, SITE_URL).toString();
 const ogImage = new URL(`/og/${ogImagePath}`, SITE_URL).toString();
 ---

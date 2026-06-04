@@ -32,7 +32,7 @@ export const FACTSHEET: Factsheet = {
   regularPrice: { usd: 'TBA', eur: 'TBA' },
 };
 
-export const DESCRIPTION = `ToyBox Security is an online 1–4 player asymmetric comedy action game. Step into the shoes of an agent of ToyBox Security, Inc. — a fictional home security company run entirely by kids — and defend the home of vacationing homeowners with a loadout of traps built from toys, kitchen junk, and whatever else can hurt a burglar. Or play as the robbers: case the place, dodge the traps, loot the house, and catch the kid before either the cops show up or the kid catches you.`;
+export const DESCRIPTION = `ToyBox Security is an online 1–4 player asymmetric comedy action game built for friend groups. Step into the shoes of an agent of ToyBox Security, Inc. — a fictional home security company run entirely by kids — and defend the home of vacationing homeowners with a loadout of traps built from toys, kitchen junk, and whatever else can hurt a burglar. Or play as the robbers: case the place, dodge the traps, loot the house, and catch the kid before either the cops show up or the kid catches you.`;
 
 export const HISTORY = `Development began in mid 2021 after solo developer thatcozydev set out to build the game he'd have wanted to play at eight years old — home alone, fending off burglars with traps made from toys and whatever he could find in the garage. After a couple of prototypes, the project grew into a 4-player asymmetric online comedy where ingenious traps, quick wits, and ragdoll physics drive the laughs.`;
 

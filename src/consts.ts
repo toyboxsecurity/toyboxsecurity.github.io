@@ -7,8 +7,10 @@
 export const SITE_URL = 'https://www.toyboxsecurity.com';
 
 export const SITE_TITLE = 'ToyBox Security';
+/** Short genre descriptor used as the homepage title suffix (e.g. "ToyBox Security | An Asymmetric Multiplayer Comedy"). */
+export const SITE_TAGLINE = 'An Asymmetric Multiplayer Comedy';
 export const SITE_DESCRIPTION =
-  'An asymmetric multiplayer trap-em-up: kids defend the house with traps, burglars loot it and catch the kid before they get caught themselves.';
+  'An asymmetric multiplayer comedy you play with friends — kids defend the house with traps while burglars loot it and chase the kid down.';
 
 // Steam
 export const STEAM_APP_ID = 2121550;
