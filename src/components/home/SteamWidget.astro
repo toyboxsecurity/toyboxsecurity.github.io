@@ -1,36 +1,28 @@
 ---
 /**
- * Steam store widget. The iframe is 646×190 native and does NOT scale —
- * on mobile we hide it entirely and show a styled fallback card instead.
+ * Steam store widget. Desktop-only.
+ *
+ * The official iframe is 646×190 native and does not scale. On mobile,
+ * the WishlistCalloutBand directly above already handles the wishlist
+ * CTA, so this entire section hides to avoid two back-to-back "click
+ * the green button" sections that would render essentially identical
+ * on a phone.
  */
 import Section from '~/components/ui/Section.astro';
-import WishlistButton from '~/components/ui/WishlistButton.astro';
 import { STEAM_WIDGET_URL, SITE_TITLE } from '~/consts';
 ---
 
-<Section spacing="default" variant="dark" class="border-t border-ink/10 text-center">
+<Section spacing="default" variant="dark" class="hidden md:block border-t border-ink/10 text-center">
   <p class="text-xs uppercase tracking-widest text-accent mb-3">On Steam</p>
   <h2 class="font-display text-display-md uppercase mb-10">See it on Steam</h2>
 
-  {/* Desktop: real Steam widget iframe */}
-  <div class="hidden md:block">
-    <iframe
-      src={STEAM_WIDGET_URL}
-      width="646"
-      height="190"
-      frameborder="0"
-      class="mx-auto rounded-lg overflow-hidden shadow-2xl"
-      title={`${SITE_TITLE} on Steam`}
-      loading="lazy"
-    ></iframe>
-  </div>
-
-  {/* Mobile: styled fallback card */}
-  <div class="md:hidden mx-auto max-w-sm rounded-2xl bg-bg-light/5 ring-1 ring-ink/10 p-6">
-    <p class="font-display text-2xl uppercase leading-tight">{SITE_TITLE}</p>
-    <p class="text-sm text-ink-muted mt-2">Coming soon to Steam</p>
-    <div class="mt-6 flex justify-center">
-      <WishlistButton utmMedium="steam_card_mobile" size="lg" fullWidth />
-    </div>
-  </div>
+  <iframe
+    src={STEAM_WIDGET_URL}
+    width="646"
+    height="190"
+    frameborder="0"
+    class="mx-auto rounded-lg overflow-hidden shadow-2xl"
+    title={`${SITE_TITLE} on Steam`}
+    loading="lazy"
+  ></iframe>
 </Section>
