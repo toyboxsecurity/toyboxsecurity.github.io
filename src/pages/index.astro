@@ -44,7 +44,14 @@ const jsonLd = JSON.stringify({
     name: `${SITE_TITLE} — Announcement Trailer`,
     description: SITE_DESCRIPTION,
     thumbnailUrl: TRAILER_POSTER_URL,
-    uploadDate: '2022-09-01',
+    // ISO 8601 with explicit timezone — Google's VideoObject structured data
+    // validator flags bare dates ("2022-09-01") as both "Invalid datetime
+    // value" and "missing a timezone". Format: YYYY-MM-DDTHH:mm:ssZ (UTC).
+    // TODO(owner): swap in the real trailer upload date if it differs.
+    uploadDate: '2022-09-01T00:00:00Z',
+    // Duration of the YouTube trailer (~99.5s extracted via yt-dlp earlier).
+    // ISO 8601 duration format: PT<minutes>M<seconds>S.
+    duration: 'PT1M39S',
     contentUrl: TRAILER_YOUTUBE_URL,
     embedUrl: TRAILER_YOUTUBE_URL.replace('watch?v=', 'embed/'),
   },
