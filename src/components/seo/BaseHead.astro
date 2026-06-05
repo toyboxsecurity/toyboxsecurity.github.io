@@ -44,9 +44,20 @@ const ogImage = new URL(`/og/${ogImagePath}`, SITE_URL).toString();
 <link rel="canonical" href={canonical} />
 
 <!-- Favicons -->
+{/*
+  Order matters: browsers pick the first format they understand.
+  - SVG first → modern browsers (Firefox/Chrome tab) get crisp vector.
+  - 192/96/48 PNGs → Google SERP requires a raster ≥ 48px on a multiple of 48.
+  - .ico → legacy/bookmark fallback.
+  - apple-touch-icon → iOS home-screen icon (180×180 PNG).
+  Generated from src/assets/logos/icon.png via scripts/generate-favicons.mjs.
+*/}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
 <!-- Sitemap -->
 <link rel="sitemap" href="/sitemap-index.xml" />
